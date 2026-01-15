@@ -24,7 +24,14 @@ import {
   FileText,
   Calendar,
   Timer,
-  ArrowRight
+  ArrowRight,
+  Link2,
+  Plus,
+  Trash2,
+  ExternalLink,
+  Globe,
+  File,
+  Video
 } from 'lucide-react';
 import { useWorkspace } from '@/lib/workspace-context';
 import { Request, RequestStatus, getStatusLabel, getStatusColor, Workspace } from '@/lib/workspace-types';
@@ -38,7 +45,11 @@ export default function AdminRequestsPage() {
     workspaces,
     getWorkspace,
     updateRequestStatus,
-    addRequestUpdate
+    addRequestUpdate,
+    addDeliverable,
+    removeDeliverable,
+    setPreviewUrl,
+    updateRequestProgress
   } = useWorkspace();
 
   const [searchQuery, setSearchQuery] = useState('');
@@ -48,6 +59,16 @@ export default function AdminRequestsPage() {
   const [updateMessage, setUpdateMessage] = useState('');
   const [progressValue, setProgressValue] = useState(0);
   const [isHydrated, setIsHydrated] = useState(false);
+  
+  // Deliverable form state
+  const [showDeliverableForm, setShowDeliverableForm] = useState(false);
+  const [deliverableForm, setDeliverableForm] = useState({
+    name: '',
+    url: '',
+    type: 'document' as 'document' | 'link' | 'preview' | 'video' | 'file',
+    description: ''
+  });
+  const [previewUrlInput, setPreviewUrlInput] = useState('');
 
   useEffect(() => {
     setIsHydrated(true);
@@ -352,6 +373,196 @@ export default function AdminRequestsPage() {
                       {getStatusLabel(status)}
                     </button>
                   ))}
+                </div>
+              </div>
+
+              {/* Progress Control */}
+              <div className="mb-6">
+                <h3 className="text-sm font-medium text-gray-400 mb-3">Update Progress</h3>
+                <div className="flex gap-3 items-center">
+                  <input
+                    type="range"
+                    min="0"
+                    max="100"
+                    value={selectedRequest.progressPercent}
+                    onChange={(e) => updateRequestProgress(selectedRequest.id, parseInt(e.target.value), selectedRequest.currentPhase)}
+                    className="flex-1 h-2 bg-background-secondary rounded-lg appearance-none cursor-pointer"
+                  />
+                  <span className="text-white font-medium w-12 text-right">{selectedRequest.progressPercent}%</span>
+                </div>
+                <input
+                  type="text"
+                  value={selectedRequest.currentPhase}
+                  onChange={(e) => updateRequestProgress(selectedRequest.id, selectedRequest.progressPercent, e.target.value)}
+                  placeholder="Current phase (e.g., Building UI)"
+                  className="input-field mt-2"
+                />
+              </div>
+
+              {/* Preview URL */}
+              <div className="mb-6">
+                <h3 className="text-sm font-medium text-gray-400 mb-3 flex items-center gap-2">
+                  <Globe className="w-4 h-4" />
+                  Preview URL (for client to review)
+                </h3>
+                {selectedRequest.previewUrl ? (
+                  <div className="flex items-center gap-2 bg-green-500/10 border border-green-500/30 rounded-xl p-3">
+                    <Globe className="w-5 h-5 text-green-400" />
+                    <a 
+                      href={selectedRequest.previewUrl} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="flex-1 text-green-400 hover:underline truncate"
+                    >
+                      {selectedRequest.previewUrl}
+                    </a>
+                    <button
+                      onClick={() => setPreviewUrl(selectedRequest.id, '')}
+                      className="p-1 hover:bg-white/10 rounded"
+                    >
+                      <X className="w-4 h-4 text-gray-400" />
+                    </button>
+                  </div>
+                ) : (
+                  <div className="flex gap-2">
+                    <input
+                      type="url"
+                      value={previewUrlInput}
+                      onChange={(e) => setPreviewUrlInput(e.target.value)}
+                      placeholder="https://preview.example.com/..."
+                      className="flex-1 input-field"
+                    />
+                    <button
+                      onClick={() => {
+                        if (previewUrlInput) {
+                          setPreviewUrl(selectedRequest.id, previewUrlInput);
+                          setPreviewUrlInput('');
+                        }
+                      }}
+                      disabled={!previewUrlInput}
+                      className="btn-primary px-4 disabled:opacity-50"
+                    >
+                      <Plus className="w-5 h-5" />
+                    </button>
+                  </div>
+                )}
+              </div>
+
+              {/* Deliverables Management */}
+              <div className="mb-6">
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="text-sm font-medium text-gray-400 flex items-center gap-2">
+                    <FileText className="w-4 h-4" />
+                    Deliverables & Documents
+                  </h3>
+                  <button
+                    onClick={() => setShowDeliverableForm(!showDeliverableForm)}
+                    className="text-xs text-primary hover:underline flex items-center gap-1"
+                  >
+                    <Plus className="w-3 h-3" />
+                    Add Deliverable
+                  </button>
+                </div>
+
+                {/* Add Deliverable Form */}
+                {showDeliverableForm && (
+                  <div className="bg-background-secondary rounded-xl p-4 mb-3 space-y-3">
+                    <div className="grid grid-cols-2 gap-3">
+                      <input
+                        type="text"
+                        value={deliverableForm.name}
+                        onChange={(e) => setDeliverableForm({ ...deliverableForm, name: e.target.value })}
+                        placeholder="Document name"
+                        className="input-field"
+                      />
+                      <select
+                        value={deliverableForm.type}
+                        onChange={(e) => setDeliverableForm({ ...deliverableForm, type: e.target.value as typeof deliverableForm.type })}
+                        className="input-field"
+                      >
+                        <option value="document">📄 Document</option>
+                        <option value="link">🔗 Link</option>
+                        <option value="preview">👁 Preview</option>
+                        <option value="video">🎥 Video</option>
+                        <option value="file">📁 File</option>
+                      </select>
+                    </div>
+                    <input
+                      type="url"
+                      value={deliverableForm.url}
+                      onChange={(e) => setDeliverableForm({ ...deliverableForm, url: e.target.value })}
+                      placeholder="URL (e.g., Google Doc, Notion, Loom, etc.)"
+                      className="input-field"
+                    />
+                    <input
+                      type="text"
+                      value={deliverableForm.description}
+                      onChange={(e) => setDeliverableForm({ ...deliverableForm, description: e.target.value })}
+                      placeholder="Description (optional)"
+                      className="input-field"
+                    />
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => setShowDeliverableForm(false)}
+                        className="flex-1 btn-secondary py-2"
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        onClick={() => {
+                          if (deliverableForm.name && deliverableForm.url) {
+                            addDeliverable(selectedRequest.id, {
+                              name: deliverableForm.name,
+                              url: deliverableForm.url,
+                              type: deliverableForm.type,
+                              description: deliverableForm.description
+                            });
+                            setDeliverableForm({ name: '', url: '', type: 'document', description: '' });
+                            setShowDeliverableForm(false);
+                          }
+                        }}
+                        disabled={!deliverableForm.name || !deliverableForm.url}
+                        className="flex-1 btn-primary py-2 disabled:opacity-50"
+                      >
+                        Add
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                {/* Existing Deliverables */}
+                <div className="space-y-2">
+                  {selectedRequest.deliverables.length === 0 ? (
+                    <p className="text-sm text-gray-500 text-center py-4">No deliverables added yet</p>
+                  ) : (
+                    selectedRequest.deliverables.map((d) => (
+                      <div key={d.id} className="flex items-center gap-3 bg-background-secondary rounded-lg p-3">
+                        {d.type === 'document' && <FileText className="w-5 h-5 text-blue-400" />}
+                        {d.type === 'link' && <Link2 className="w-5 h-5 text-green-400" />}
+                        {d.type === 'preview' && <Eye className="w-5 h-5 text-purple-400" />}
+                        {d.type === 'video' && <Video className="w-5 h-5 text-red-400" />}
+                        {d.type === 'file' && <File className="w-5 h-5 text-amber-400" />}
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm text-white truncate">{d.name}</p>
+                          {d.description && <p className="text-xs text-gray-500 truncate">{d.description}</p>}
+                        </div>
+                        <a
+                          href={d.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="p-2 hover:bg-white/10 rounded-lg text-gray-400 hover:text-white"
+                        >
+                          <ExternalLink className="w-4 h-4" />
+                        </a>
+                        <button
+                          onClick={() => removeDeliverable(selectedRequest.id, d.id)}
+                          className="p-2 hover:bg-red-500/20 rounded-lg text-gray-400 hover:text-red-400"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
+                    ))
+                  )}
                 </div>
               </div>
 

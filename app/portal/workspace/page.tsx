@@ -719,11 +719,25 @@ function RequestCard({
         </div>
       )}
 
-      {/* Review Alert */}
+      {/* Review Alert with Preview Link */}
       {isReviewReady && (
-        <div className="bg-green-500/10 rounded-lg p-2 mb-3 flex items-center gap-2">
-          <Eye className="w-4 h-4 text-green-400" />
-          <span className="text-xs text-green-400">Ready for your review!</span>
+        <div className="bg-green-500/10 rounded-lg p-2 mb-3">
+          <div className="flex items-center gap-2 mb-1">
+            <Eye className="w-4 h-4 text-green-400" />
+            <span className="text-xs text-green-400 font-medium">Ready for your review!</span>
+          </div>
+          {request.previewUrl && (
+            <a
+              href={request.previewUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={(e) => e.stopPropagation()}
+              className="flex items-center gap-1.5 text-xs text-primary hover:underline mt-1"
+            >
+              <ExternalLink className="w-3 h-3" />
+              Open Preview
+            </a>
+          )}
         </div>
       )}
 
@@ -879,11 +893,33 @@ function RequestDetailModal({
           </div>
         </div>
 
+        {/* Preview URL */}
+        {request.previewUrl && (
+          <div className="mb-6">
+            <h3 className="text-sm font-medium text-gray-400 mb-3">Live Preview</h3>
+            <a
+              href={request.previewUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-3 bg-gradient-to-r from-primary/10 to-accent/10 border border-primary/30 rounded-xl p-4 hover:bg-primary/20 transition-colors group"
+            >
+              <div className="w-10 h-10 rounded-lg bg-primary/20 flex items-center justify-center">
+                <Eye className="w-5 h-5 text-primary" />
+              </div>
+              <div className="flex-1">
+                <p className="text-white font-medium">View Live Preview</p>
+                <p className="text-xs text-gray-400 truncate">{request.previewUrl}</p>
+              </div>
+              <ExternalLink className="w-5 h-5 text-primary group-hover:translate-x-1 transition-transform" />
+            </a>
+          </div>
+        )}
+
         {/* Deliverables */}
         {request.deliverables.length > 0 && (
           <div className="mb-6">
-            <h3 className="text-sm font-medium text-gray-400 mb-3">Deliverables</h3>
-            <div className="grid grid-cols-2 gap-3">
+            <h3 className="text-sm font-medium text-gray-400 mb-3">Deliverables & Documentation</h3>
+            <div className="space-y-2">
               {request.deliverables.map((d) => (
                 <a
                   key={d.id}
@@ -892,9 +928,16 @@ function RequestDetailModal({
                   rel="noopener noreferrer"
                   className="flex items-center gap-3 bg-background-secondary rounded-xl p-3 hover:bg-white/5 transition-colors"
                 >
-                  <FileText className="w-5 h-5 text-primary" />
-                  <span className="text-sm text-white">{d.name}</span>
-                  <ExternalLink className="w-4 h-4 text-gray-400 ml-auto" />
+                  {d.type === 'document' && <FileText className="w-5 h-5 text-blue-400" />}
+                  {d.type === 'link' && <Zap className="w-5 h-5 text-green-400" />}
+                  {d.type === 'preview' && <Eye className="w-5 h-5 text-purple-400" />}
+                  {d.type === 'video' && <FileText className="w-5 h-5 text-red-400" />}
+                  {d.type === 'file' && <FileText className="w-5 h-5 text-amber-400" />}
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm text-white">{d.name}</p>
+                    {d.description && <p className="text-xs text-gray-500">{d.description}</p>}
+                  </div>
+                  <ExternalLink className="w-4 h-4 text-gray-400" />
                 </a>
               ))}
             </div>

@@ -73,17 +73,29 @@ export default function AdminDashboard() {
     );
   }
 
-  const handleCreateWorkspace = (e: React.FormEvent) => {
+  const [isCreating, setIsCreating] = useState(false);
+  const [sendWelcomeEmail, setSendWelcomeEmail] = useState(true);
+
+  const handleCreateWorkspace = async (e: React.FormEvent) => {
     e.preventDefault();
-    const workspace = createWorkspace({
-      name: formData.name || `${formData.companyName} Workspace`,
-      companyName: formData.companyName,
-      clientName: formData.clientName,
-      clientEmail: formData.clientEmail
-    });
-    setShowCreateModal(false);
-    setFormData({ companyName: '', clientName: '', clientEmail: '', name: '' });
-    setSelectedWorkspace(workspace);
+    setIsCreating(true);
+    
+    try {
+      const workspace = await createWorkspace({
+        name: formData.name || `${formData.companyName} Workspace`,
+        companyName: formData.companyName,
+        clientName: formData.clientName,
+        clientEmail: formData.clientEmail
+      }, sendWelcomeEmail);
+      
+      setShowCreateModal(false);
+      setFormData({ companyName: '', clientName: '', clientEmail: '', name: '' });
+      setSelectedWorkspace(workspace);
+    } catch (error) {
+      console.error('Failed to create workspace:', error);
+    } finally {
+      setIsCreating(false);
+    }
   };
 
   const copyAccessCode = (code: string) => {
@@ -450,19 +462,47 @@ export default function AdminDashboard() {
                   />
                 </div>
 
+                {/* Send Welcome Email Toggle */}
+                <div className="flex items-center justify-between p-4 bg-background-secondary rounded-xl">
+                  <div>
+                    <p className="text-sm font-medium text-white">Send Welcome Email</p>
+                    <p className="text-xs text-gray-400">Client receives access code & onboarding</p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setSendWelcomeEmail(!sendWelcomeEmail)}
+                    className={`w-12 h-6 rounded-full transition-colors relative ${
+                      sendWelcomeEmail ? 'bg-primary' : 'bg-gray-600'
+                    }`}
+                  >
+                    <div className={`w-5 h-5 bg-white rounded-full absolute top-0.5 transition-transform ${
+                      sendWelcomeEmail ? 'translate-x-6' : 'translate-x-0.5'
+                    }`} />
+                  </button>
+                </div>
+
                 <div className="flex gap-3 pt-4">
                   <button
                     type="button"
                     onClick={() => setShowCreateModal(false)}
                     className="flex-1 btn-secondary"
+                    disabled={isCreating}
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
-                    className="flex-1 btn-primary"
+                    disabled={isCreating}
+                    className="flex-1 btn-primary flex items-center justify-center gap-2 disabled:opacity-50"
                   >
-                    Create Workspace
+                    {isCreating ? (
+                      <>
+                        <div className="spinner w-4 h-4" />
+                        Creating...
+                      </>
+                    ) : (
+                      'Create Workspace'
+                    )}
                   </button>
                 </div>
               </form>

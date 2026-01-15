@@ -4,6 +4,15 @@ import { Resend } from "resend";
 import { CompanyInsights, DepartmentInsights, PersonalInsights, ZiziBooking } from "./storage";
 import { ZIZI_BRANDING, ZIZI_ZOOM_MEETING, ZIZI_PRICING } from "./zizi-constants";
 
+// Workspace types for email
+interface WorkspaceWelcomeEmailProps {
+  to: string;
+  clientName: string;
+  companyName: string;
+  accessCode: string;
+  workspaceUrl: string;
+}
+
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 // Email configuration
@@ -541,5 +550,152 @@ export async function sendZiziReminderEmail({
   } catch (error) {
     console.error("Error sending reminder email:", error);
     return { success: false, error: "Failed to send reminder email" };
+  }
+}
+
+/**
+ * Send workspace welcome email when a new workspace is created
+ * Includes access code, workspace URL, and onboarding instructions
+ */
+export async function sendWorkspaceWelcomeEmail({
+  to,
+  clientName,
+  companyName,
+  accessCode,
+  workspaceUrl,
+}: WorkspaceWelcomeEmailProps): Promise<{ success: boolean; error?: string }> {
+  const firstName = clientName.split(" ")[0];
+
+  try {
+    await resend.emails.send({
+      from: FROM_EMAIL,
+      to,
+      subject: `🚀 Welcome to Zizi! Your ${companyName} Workspace is Ready`,
+      html: `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #0a0a0f;">
+  <div style="max-width: 600px; margin: 0 auto; background: linear-gradient(135deg, #0f172a 0%, #0a0a0f 100%); padding: 40px 30px;">
+    
+    <!-- Header -->
+    <div style="text-align: center; margin-bottom: 40px;">
+      <h1 style="color: #06B6D4; font-size: 32px; margin: 0; font-weight: bold;">Zizi</h1>
+      <p style="color: #9ca3af; margin: 5px 0 0;">Your AI Ops Team</p>
+    </div>
+    
+    <!-- Welcome Badge -->
+    <div style="text-align: center; margin-bottom: 30px;">
+      <div style="display: inline-block; background: linear-gradient(135deg, #06B6D4, #8B5CF6); padding: 15px 30px; border-radius: 50px;">
+        <span style="color: white; font-size: 18px; font-weight: 600;">🎉 Workspace Created!</span>
+      </div>
+    </div>
+    
+    <!-- Greeting -->
+    <p style="color: #e5e7eb; font-size: 20px; margin-bottom: 15px;">
+      Hey ${firstName}! 👋
+    </p>
+    
+    <p style="color: #9ca3af; font-size: 16px; line-height: 1.6; margin-bottom: 30px;">
+      Great news! Your <strong style="color: #e5e7eb;">${companyName}</strong> workspace is now live and ready for you to start submitting AI build requests.
+    </p>
+    
+    <!-- Access Code Box -->
+    <div style="background: linear-gradient(135deg, rgba(6, 182, 212, 0.15), rgba(139, 92, 246, 0.15)); border: 2px solid rgba(6, 182, 212, 0.4); border-radius: 16px; padding: 30px; margin-bottom: 30px; text-align: center;">
+      <p style="color: #9ca3af; margin: 0 0 10px; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">Your Access Code</p>
+      <p style="color: #06B6D4; font-size: 36px; font-weight: bold; margin: 0; letter-spacing: 4px; font-family: monospace;">
+        ${accessCode}
+      </p>
+      <p style="color: #6b7280; margin: 15px 0 0; font-size: 12px;">
+        Keep this code safe - you'll need it to access your workspace
+      </p>
+    </div>
+    
+    <!-- Access Button -->
+    <div style="text-align: center; margin-bottom: 40px;">
+      <a href="${workspaceUrl}" style="display: inline-block; background: linear-gradient(135deg, #06B6D4, #0891B2); color: white; text-decoration: none; padding: 16px 40px; border-radius: 12px; font-weight: 600; font-size: 16px;">
+        Access Your Workspace →
+      </a>
+    </div>
+    
+    <!-- How It Works -->
+    <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px; padding: 25px; margin-bottom: 30px;">
+      <h3 style="color: #e5e7eb; margin: 0 0 20px; font-size: 18px;">📋 How It Works</h3>
+      
+      <div style="margin-bottom: 20px;">
+        <div style="display: flex; align-items: flex-start; margin-bottom: 15px;">
+          <div style="background: rgba(6, 182, 212, 0.2); color: #06B6D4; width: 28px; height: 28px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 12px; flex-shrink: 0;">1</div>
+          <div>
+            <p style="color: #e5e7eb; margin: 0 0 3px; font-weight: 600;">Submit a Request</p>
+            <p style="color: #9ca3af; margin: 0; font-size: 14px;">Describe what you want built - be as detailed as possible</p>
+          </div>
+        </div>
+        
+        <div style="display: flex; align-items: flex-start; margin-bottom: 15px;">
+          <div style="background: rgba(6, 182, 212, 0.2); color: #06B6D4; width: 28px; height: 28px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 12px; flex-shrink: 0;">2</div>
+          <div>
+            <p style="color: #e5e7eb; margin: 0 0 3px; font-weight: 600;">We Build It</p>
+            <p style="color: #9ca3af; margin: 0; font-size: 14px;">Track real-time progress as we build your AI solution</p>
+          </div>
+        </div>
+        
+        <div style="display: flex; align-items: flex-start; margin-bottom: 15px;">
+          <div style="background: rgba(6, 182, 212, 0.2); color: #06B6D4; width: 28px; height: 28px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 12px; flex-shrink: 0;">3</div>
+          <div>
+            <p style="color: #e5e7eb; margin: 0 0 3px; font-weight: 600;">Review & Approve</p>
+            <p style="color: #9ca3af; margin: 0; font-size: 14px;">Test the build, request changes if needed, then approve</p>
+          </div>
+        </div>
+        
+        <div style="display: flex; align-items: flex-start;">
+          <div style="background: rgba(34, 197, 94, 0.2); color: #22C55E; width: 28px; height: 28px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 12px; flex-shrink: 0;">✓</div>
+          <div>
+            <p style="color: #e5e7eb; margin: 0 0 3px; font-weight: 600;">Done!</p>
+            <p style="color: #9ca3af; margin: 0; font-size: 14px;">Your AI system is live and maintained forever</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Timeline Info -->
+    <div style="display: flex; gap: 15px; margin-bottom: 30px;">
+      <div style="flex: 1; background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.3); border-radius: 12px; padding: 15px; text-align: center;">
+        <p style="color: #22C55E; font-size: 24px; font-weight: bold; margin: 0;">1-2</p>
+        <p style="color: #9ca3af; margin: 5px 0 0; font-size: 12px;">days for Simple builds</p>
+      </div>
+      <div style="flex: 1; background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 12px; padding: 15px; text-align: center;">
+        <p style="color: #F59E0B; font-size: 24px; font-weight: bold; margin: 0;">5-7</p>
+        <p style="color: #9ca3af; margin: 5px 0 0; font-size: 12px;">days for Complex builds</p>
+      </div>
+    </div>
+    
+    <!-- Support -->
+    <div style="text-align: center; padding: 20px 0; border-top: 1px solid rgba(255,255,255,0.1);">
+      <p style="color: #9ca3af; font-size: 14px; margin: 0 0 10px;">
+        Need help? We're here for you.
+      </p>
+      <a href="mailto:support@zizi.so" style="color: #06B6D4; font-size: 14px;">support@zizi.so</a>
+    </div>
+    
+    <!-- Footer -->
+    <div style="text-align: center; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
+      <p style="color: #6b7280; font-size: 12px; margin: 0;">
+        © ${new Date().getFullYear()} Zizi. All rights reserved.
+      </p>
+    </div>
+    
+  </div>
+</body>
+</html>
+      `,
+    });
+
+    return { success: true };
+  } catch (error) {
+    console.error("Error sending workspace welcome email:", error);
+    return { success: false, error: "Failed to send workspace welcome email" };
   }
 }

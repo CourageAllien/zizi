@@ -373,6 +373,7 @@ export default function ZiziBookingPage() {
                           {TIME_SLOTS.map((time) => (
                             <button
                               key={time}
+                              type="button"
                               onClick={() => handleTimeSelect(time)}
                               className={`py-2 px-3 rounded-lg text-sm font-medium transition-all ${
                                 selectedTime === time

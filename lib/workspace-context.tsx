@@ -10,18 +10,15 @@ import {
   RequestComplexity,
   RequestStatus,
   RequestUpdate,
+  Deliverable,
   calculateEstimatedCompletion,
-  getEstimatedDays
+  getEstimatedDays,
+  generateSecureAccessCode
 } from './workspace-types';
 
 // Generate unique IDs
 function generateId(): string {
   return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-}
-
-// Generate access code
-function generateAccessCode(): string {
-  return Math.random().toString(36).substring(2, 8).toUpperCase();
 }
 
 // Mock FAQ Data
@@ -161,7 +158,7 @@ interface WorkspaceContextType {
   
   // Workspaces (Admin)
   workspaces: Workspace[];
-  createWorkspace: (data: Omit<Workspace, 'id' | 'createdAt' | 'updatedAt' | 'accessCode' | 'isActive'>) => Workspace;
+  createWorkspace: (data: Omit<Workspace, 'id' | 'createdAt' | 'updatedAt' | 'accessCode' | 'isActive'>, sendEmail?: boolean) => Promise<Workspace>;
   updateWorkspace: (id: string, data: Partial<Workspace>) => void;
   deleteWorkspace: (id: string) => void;
   getWorkspace: (id: string) => Workspace | undefined;
@@ -173,6 +170,12 @@ interface WorkspaceContextType {
   updateRequestStatus: (requestId: string, status: RequestStatus, update?: string) => void;
   addRequestUpdate: (requestId: string, update: Omit<RequestUpdate, 'id' | 'timestamp'>) => void;
   submitReviewFeedback: (requestId: string, feedback: string, approved: boolean) => void;
+  
+  // Deliverables & Preview (Admin)
+  addDeliverable: (requestId: string, deliverable: Omit<Deliverable, 'id' | 'uploadedAt'>) => void;
+  removeDeliverable: (requestId: string, deliverableId: string) => void;
+  setPreviewUrl: (requestId: string, url: string) => void;
+  updateRequestProgress: (requestId: string, progress: number, phase: string) => void;
   
   // Templates & FAQ
   templates: RequestTemplate[];
@@ -263,7 +266,7 @@ const initialRequests: Request[] = [
     createdAt: new Date('2024-01-13'),
     startedAt: new Date('2024-01-13'),
     estimatedCompletionAt: new Date('2024-01-15'),
-    progressPercent: 90,
+    progressPercent: 95,
     currentPhase: 'Review',
     updates: [
       { id: 'u1', timestamp: new Date('2024-01-13T09:00:00'), message: 'Started work on Slack integration', type: 'info' },
@@ -272,8 +275,10 @@ const initialRequests: Request[] = [
     ],
     attachments: [],
     deliverables: [
-      { id: 'd1', name: 'Integration Guide', url: '#', type: 'document', uploadedAt: new Date('2024-01-14') }
+      { id: 'd1', name: 'Integration Guide', url: 'https://docs.google.com/document/d/example', type: 'document', description: 'Step-by-step setup instructions', uploadedAt: new Date('2024-01-14') },
+      { id: 'd2', name: 'Demo Video', url: 'https://www.loom.com/share/example', type: 'video', description: 'Walkthrough of the integration', uploadedAt: new Date('2024-01-14') }
     ],
+    previewUrl: 'https://slack-crm-integration.vercel.app/demo',
     revisionCount: 0,
     tags: ['slack', 'crm', 'notifications']
   }
@@ -358,16 +363,43 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
     localStorage.removeItem('zizi-user');
   };
 
-  const createWorkspace = (data: Omit<Workspace, 'id' | 'createdAt' | 'updatedAt' | 'accessCode' | 'isActive'>): Workspace => {
+  const createWorkspace = async (
+    data: Omit<Workspace, 'id' | 'createdAt' | 'updatedAt' | 'accessCode' | 'isActive'>,
+    sendEmail: boolean = true
+  ): Promise<Workspace> => {
+    // Generate secure access code using company name
+    const accessCode = generateSecureAccessCode(data.companyName);
+    
     const newWorkspace: Workspace = {
       ...data,
       id: generateId(),
-      accessCode: generateAccessCode(),
+      accessCode,
       createdAt: new Date(),
       updatedAt: new Date(),
       isActive: true
     };
+    
     setWorkspaces(prev => [...prev, newWorkspace]);
+
+    // Send welcome email via API if requested
+    if (sendEmail) {
+      try {
+        await fetch('/api/workspace/create', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            companyName: data.companyName,
+            clientName: data.clientName,
+            clientEmail: data.clientEmail,
+            workspaceName: data.name,
+            accessCode: accessCode,
+          }),
+        });
+      } catch (error) {
+        console.error('Failed to send welcome email:', error);
+      }
+    }
+    
     return newWorkspace;
   };
 
@@ -509,6 +541,80 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
 
   const markAsRead = () => setUnreadCount(0);
 
+  const addDeliverable = (requestId: string, deliverable: Omit<Deliverable, 'id' | 'uploadedAt'>) => {
+    setRequests(prev =>
+      prev.map(r => {
+        if (r.id === requestId) {
+          const newDeliverable: Deliverable = {
+            ...deliverable,
+            id: generateId(),
+            uploadedAt: new Date()
+          };
+          return {
+            ...r,
+            deliverables: [...r.deliverables, newDeliverable]
+          };
+        }
+        return r;
+      })
+    );
+    setUnreadCount(prev => prev + 1);
+  };
+
+  const removeDeliverable = (requestId: string, deliverableId: string) => {
+    setRequests(prev =>
+      prev.map(r => {
+        if (r.id === requestId) {
+          return {
+            ...r,
+            deliverables: r.deliverables.filter(d => d.id !== deliverableId)
+          };
+        }
+        return r;
+      })
+    );
+  };
+
+  const setPreviewUrl = (requestId: string, url: string) => {
+    setRequests(prev =>
+      prev.map(r => {
+        if (r.id === requestId) {
+          const updates = [
+            ...r.updates,
+            {
+              id: generateId(),
+              timestamp: new Date(),
+              message: 'Preview link added - ready for your review!',
+              type: 'milestone' as const
+            }
+          ];
+          return {
+            ...r,
+            previewUrl: url,
+            updates
+          };
+        }
+        return r;
+      })
+    );
+    setUnreadCount(prev => prev + 1);
+  };
+
+  const updateRequestProgress = (requestId: string, progress: number, phase: string) => {
+    setRequests(prev =>
+      prev.map(r => {
+        if (r.id === requestId) {
+          return {
+            ...r,
+            progressPercent: Math.min(100, Math.max(0, progress)),
+            currentPhase: phase
+          };
+        }
+        return r;
+      })
+    );
+  };
+
   return (
     <WorkspaceContext.Provider
       value={{
@@ -527,6 +633,10 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
         updateRequestStatus,
         addRequestUpdate,
         submitReviewFeedback,
+        addDeliverable,
+        removeDeliverable,
+        setPreviewUrl,
+        updateRequestProgress,
         templates: mockTemplates,
         faqs: mockFAQs,
         unreadCount,
