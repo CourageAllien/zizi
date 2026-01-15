@@ -30,25 +30,89 @@ const BENEFITS = [
   },
 ];
 
-const TIME_SLOTS = [
-  "09:00",
-  "09:30",
-  "10:00",
-  "10:30",
-  "11:00",
-  "11:30",
-  "12:00",
-  "12:30",
-  "13:00",
-  "13:30",
-  "14:00",
-  "14:30",
-  "15:00",
-  "15:30",
-  "16:00",
-  "16:30",
-  "17:00",
-];
+// Nigerian Time (WAT = UTC+1) availability: 9:00 AM to 2:00 AM
+// This means UTC availability: 8:00 AM to 1:00 AM (next day)
+const NIGERIA_UTC_OFFSET = 1; // WAT is UTC+1
+const AVAILABILITY_START_HOUR_WAT = 9; // 9 AM Nigerian time
+const AVAILABILITY_END_HOUR_WAT = 26; // 2 AM next day = 26 (24 + 2) for easier math
+
+// Generate all possible 30-minute slots in a day (in local time)
+function generateAllTimeSlots(): string[] {
+  const slots: string[] = [];
+  for (let hour = 0; hour < 24; hour++) {
+    slots.push(`${hour.toString().padStart(2, "0")}:00`);
+    slots.push(`${hour.toString().padStart(2, "0")}:30`);
+  }
+  return slots;
+}
+
+// Check if a local time on a given date falls within Nigerian availability
+function isWithinNigerianAvailability(localDate: Date, localTimeStr: string): boolean {
+  const [hours, minutes] = localTimeStr.split(":").map(Number);
+  
+  // Create a date object with the local time
+  const localDateTime = new Date(localDate);
+  localDateTime.setHours(hours, minutes, 0, 0);
+  
+  // Convert to UTC
+  const utcHours = localDateTime.getUTCHours();
+  const utcMinutes = localDateTime.getUTCMinutes();
+  
+  // Convert UTC to Nigerian time (WAT = UTC+1)
+  let nigerianHours = utcHours + NIGERIA_UTC_OFFSET;
+  
+  // Handle day boundary - Nigerian availability spans midnight
+  // Available from 9 AM to 2 AM next day
+  // Normalize to a 0-48 range where 0 = midnight of current day
+  if (nigerianHours < 0) nigerianHours += 24;
+  
+  // If Nigerian time is between midnight and 2 AM, add 24 to treat it as "next day morning"
+  const normalizedNigerianHours = nigerianHours < AVAILABILITY_START_HOUR_WAT && nigerianHours < 3 
+    ? nigerianHours + 24 
+    : nigerianHours;
+  
+  // Check if within 9 AM to 2 AM (26 in our normalized scale)
+  const nigerianTimeValue = normalizedNigerianHours + (utcMinutes / 60);
+  
+  return nigerianTimeValue >= AVAILABILITY_START_HOUR_WAT && nigerianTimeValue < AVAILABILITY_END_HOUR_WAT;
+}
+
+// Get available time slots for a specific date in user's local timezone
+function getAvailableTimeSlots(selectedDate: Date): string[] {
+  const allSlots = generateAllTimeSlots();
+  const now = new Date();
+  
+  return allSlots.filter(timeStr => {
+    // Check if within Nigerian availability
+    if (!isWithinNigerianAvailability(selectedDate, timeStr)) {
+      return false;
+    }
+    
+    // If it's today, only show future times (with 1 hour buffer)
+    if (selectedDate.toDateString() === now.toDateString()) {
+      const [hours, minutes] = timeStr.split(":").map(Number);
+      const slotTime = new Date(selectedDate);
+      slotTime.setHours(hours, minutes, 0, 0);
+      
+      // Add 1 hour buffer
+      const bufferTime = new Date(now.getTime() + 60 * 60 * 1000);
+      if (slotTime <= bufferTime) {
+        return false;
+      }
+    }
+    
+    return true;
+  });
+}
+
+// Get user's timezone name for display
+function getUserTimezone(): string {
+  try {
+    return Intl.DateTimeFormat().resolvedOptions().timeZone;
+  } catch {
+    return "your local time";
+  }
+}
 
 const LOADING_MESSAGES = [
   "Setting up your call...",
@@ -103,6 +167,7 @@ export default function ZiziBookingPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [loadingMessageIndex, setLoadingMessageIndex] = useState(0);
   const [error, setError] = useState<string | null>(null);
+  const [userTimezone, setUserTimezone] = useState<string>("");
 
   // Form state
   const [formData, setFormData] = useState({
@@ -112,6 +177,11 @@ export default function ZiziBookingPage() {
     challenge: "",
     idealOutcome: "",
   });
+
+  // Get user's timezone on mount
+  useEffect(() => {
+    setUserTimezone(getUserTimezone());
+  }, []);
 
   // Cycle through loading messages
   useEffect(() => {
@@ -131,6 +201,12 @@ export default function ZiziBookingPage() {
     const startIndex = calendarWeekOffset * 7;
     return allDates.slice(startIndex, startIndex + 14);
   }, [calendarWeekOffset]);
+
+  // Generate available time slots for selected date
+  const availableTimeSlots = useMemo(() => {
+    if (!selectedDate) return [];
+    return getAvailableTimeSlots(selectedDate);
+  }, [selectedDate]);
 
   const handleDateSelect = (date: Date) => {
     setSelectedDate(date);
@@ -360,7 +436,7 @@ export default function ZiziBookingPage() {
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: "auto" }}
                       >
-                        <h3 className="text-sm font-medium text-gray-400 mb-3 flex items-center gap-2">
+                        <h3 className="text-sm font-medium text-gray-400 mb-2 flex items-center gap-2">
                           <Clock className="w-4 h-4" />
                           Available times for{" "}
                           {selectedDate.toLocaleDateString("en-US", {
@@ -369,22 +445,34 @@ export default function ZiziBookingPage() {
                             day: "numeric",
                           })}
                         </h3>
-                        <div className="grid grid-cols-4 gap-2 max-h-48 overflow-y-auto">
-                          {TIME_SLOTS.map((time) => (
-                            <button
-                              key={time}
-                              type="button"
-                              onClick={() => handleTimeSelect(time)}
-                              className={`py-2 px-3 rounded-lg text-sm font-medium transition-all ${
-                                selectedTime === time
-                                  ? "bg-cyan-500 text-white"
-                                  : "bg-gray-800/50 hover:bg-gray-700/50 text-gray-300"
-                              }`}
-                            >
-                              {formatTime(time)}
-                            </button>
-                          ))}
-                        </div>
+                        {userTimezone && (
+                          <p className="text-xs text-gray-500 mb-3">
+                            Times shown in your timezone: {userTimezone}
+                          </p>
+                        )}
+                        {availableTimeSlots.length > 0 ? (
+                          <div className="grid grid-cols-4 gap-2 max-h-48 overflow-y-auto">
+                            {availableTimeSlots.map((time) => (
+                              <button
+                                key={time}
+                                type="button"
+                                onClick={() => handleTimeSelect(time)}
+                                className={`py-2 px-3 rounded-lg text-sm font-medium transition-all ${
+                                  selectedTime === time
+                                    ? "bg-cyan-500 text-white"
+                                    : "bg-gray-800/50 hover:bg-gray-700/50 text-gray-300"
+                                }`}
+                              >
+                                {formatTime(time)}
+                              </button>
+                            ))}
+                          </div>
+                        ) : (
+                          <div className="text-center py-6 text-gray-500">
+                            <p>No available times for this date.</p>
+                            <p className="text-sm mt-1">Please select another date.</p>
+                          </div>
+                        )}
                       </motion.div>
                     )}
 

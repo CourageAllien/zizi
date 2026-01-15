@@ -54,6 +54,8 @@ export default function AdminDashboard() {
     name: ''
   });
   const [isHydrated, setIsHydrated] = useState(false);
+  const [isCreating, setIsCreating] = useState(false);
+  const [sendWelcomeEmail, setSendWelcomeEmail] = useState(true);
 
   useEffect(() => {
     setIsHydrated(true);
@@ -72,9 +74,6 @@ export default function AdminDashboard() {
       </div>
     );
   }
-
-  const [isCreating, setIsCreating] = useState(false);
-  const [sendWelcomeEmail, setSendWelcomeEmail] = useState(true);
 
   const handleCreateWorkspace = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -99,6 +98,15 @@ export default function AdminDashboard() {
   };
 
   const copyAccessCode = (code: string) => {
+    // Copy the direct access URL instead of just the code
+    const baseUrl = typeof window !== 'undefined' ? window.location.origin : '';
+    const accessUrl = `${baseUrl}/portal/access/${code}`;
+    navigator.clipboard.writeText(accessUrl);
+    setCopiedCode(code);
+    setTimeout(() => setCopiedCode(null), 2000);
+  };
+
+  const copyCodeOnly = (code: string) => {
     navigator.clipboard.writeText(code);
     setCopiedCode(code);
     setTimeout(() => setCopiedCode(null), 2000);
@@ -283,9 +291,9 @@ export default function AdminDashboard() {
                     </div>
                   </div>
 
-                  {/* Access Code */}
+                  {/* Access Code & Link */}
                   <div className="bg-background-secondary rounded-xl p-4 mb-4">
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center justify-between mb-2">
                       <div>
                         <p className="text-xs text-gray-500 mb-1">Access Code</p>
                         <p className="text-xl font-mono font-bold text-primary tracking-wider">
@@ -293,9 +301,9 @@ export default function AdminDashboard() {
                         </p>
                       </div>
                       <button
-                        onClick={() => copyAccessCode(workspace.accessCode)}
+                        onClick={() => copyCodeOnly(workspace.accessCode)}
                         className="p-2 rounded-lg hover:bg-white/10 transition-colors"
-                        title="Copy access code"
+                        title="Copy code only"
                       >
                         {copiedCode === workspace.accessCode ? (
                           <Check className="w-5 h-5 text-green-400" />
@@ -304,6 +312,22 @@ export default function AdminDashboard() {
                         )}
                       </button>
                     </div>
+                    <button
+                      onClick={() => copyAccessCode(workspace.accessCode)}
+                      className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg bg-primary/10 hover:bg-primary/20 text-primary text-sm transition-colors"
+                    >
+                      {copiedCode === workspace.accessCode ? (
+                        <>
+                          <Check className="w-4 h-4" />
+                          Link Copied!
+                        </>
+                      ) : (
+                        <>
+                          <Copy className="w-4 h-4" />
+                          Copy Client Login Link
+                        </>
+                      )}
+                    </button>
                   </div>
 
                   {/* Stats */}

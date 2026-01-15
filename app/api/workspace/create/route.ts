@@ -1,29 +1,25 @@
 import { NextResponse } from 'next/server';
 import { sendWorkspaceWelcomeEmail } from '@/lib/resend';
-import { generateSecureAccessCode } from '@/lib/workspace-types';
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { companyName, clientName, clientEmail, workspaceName } = body;
+    const { companyName, clientName, clientEmail, workspaceName, accessCode } = body;
 
     // Validate required fields
-    if (!companyName || !clientName || !clientEmail) {
+    if (!companyName || !clientName || !clientEmail || !accessCode) {
       return NextResponse.json(
         { error: 'Missing required fields' },
         { status: 400 }
       );
     }
 
-    // Generate secure access code using company name
-    const accessCode = generateSecureAccessCode(companyName);
-
     // Generate workspace ID
     const workspaceId = `ws-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
 
-    // Generate workspace URL
+    // Generate workspace URL - direct access link with the code
     const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
-    const workspaceUrl = `${baseUrl}/portal`;
+    const workspaceUrl = `${baseUrl}/portal/access/${accessCode}`;
 
     // Create workspace data
     const workspace = {
