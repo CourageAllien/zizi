@@ -1,8 +1,83 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
 
+// List of free email domains to block
+const FREE_EMAIL_DOMAINS = [
+  "gmail.com",
+  "yahoo.com",
+  "yahoo.co.uk",
+  "hotmail.com",
+  "hotmail.co.uk",
+  "outlook.com",
+  "outlook.co.uk",
+  "live.com",
+  "msn.com",
+  "aol.com",
+  "icloud.com",
+  "me.com",
+  "mac.com",
+  "protonmail.com",
+  "proton.me",
+  "mail.com",
+  "zoho.com",
+  "yandex.com",
+  "gmx.com",
+  "gmx.net",
+];
+
+function isCompanyEmail(email: string): boolean {
+  const domain = email.split("@")[1]?.toLowerCase();
+  if (!domain) return false;
+  return !FREE_EMAIL_DOMAINS.includes(domain);
+}
+
 export default function Hero() {
+  const [appDescription, setAppDescription] = useState("");
+  const [email, setEmail] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+
+    if (!appDescription.trim()) {
+      setError("Please describe what you want us to build");
+      return;
+    }
+
+    if (!email.trim()) {
+      setError("Please enter your company email");
+      return;
+    }
+
+    if (!isCompanyEmail(email)) {
+      setError("Please use your company email (no Gmail, Yahoo, Outlook, etc.)");
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch("/api/prototype-request", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ description: appDescription, email }),
+      });
+
+      if (!response.ok) throw new Error("Failed to submit");
+
+      setIsSubmitted(true);
+    } catch {
+      setError("Something went wrong. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <section className="min-h-screen flex items-center justify-center relative overflow-hidden pt-20 bg-[var(--color-bg-primary)]">
       {/* Background gradients */}
@@ -73,20 +148,94 @@ export default function Hero() {
           </a>
         </motion.div>
 
+        {/* Proof is in the Pudding - Build Request Section */}
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.5 }}
-          className="mt-24 pt-12 border-t border-[var(--color-border)]"
+          className="mt-20 pt-12 border-t border-[var(--color-border)]"
         >
-          <p className="text-sm text-[var(--color-text-muted)] mb-6">
-            Trusted by forward-thinking teams
-          </p>
-          <div className="flex items-center justify-center gap-12 text-[var(--color-text-muted)]">
-            <span className="text-xl font-semibold">Company</span>
-            <span className="text-xl font-semibold">Startup</span>
-            <span className="text-xl font-semibold">Agency</span>
-            <span className="hidden sm:block text-xl font-semibold">Studio</span>
+          <div className="max-w-2xl mx-auto">
+            <div className="flex items-center justify-center gap-2 mb-4">
+              <span className="text-2xl">⚡</span>
+              <h3 className="text-xl md:text-2xl font-bold text-white">
+                The proof is in the pudding
+              </h3>
+            </div>
+            <p className="text-[var(--color-text-secondary)] mb-8">
+              Describe a simple app and we&apos;ll build you a working prototype in{" "}
+              <span className="text-[var(--color-primary)] font-semibold">30 minutes</span>. 
+              Free. No strings attached.
+            </p>
+
+            {!isSubmitted ? (
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div>
+                  <textarea
+                    value={appDescription}
+                    onChange={(e) => setAppDescription(e.target.value)}
+                    placeholder="Describe the app you want us to build... (e.g., 'A dashboard that shows my team's daily sales metrics with charts')"
+                    rows={4}
+                    className="input-field resize-none text-left"
+                  />
+                </div>
+                <div>
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Your company email (no Gmail, Yahoo, etc.)"
+                    className="input-field"
+                  />
+                </div>
+
+                {error && (
+                  <p className="text-red-400 text-sm">{error}</p>
+                )}
+
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="btn-primary w-full text-base py-4 flex items-center justify-center gap-3 disabled:opacity-70 disabled:cursor-not-allowed"
+                >
+                  {isSubmitting ? (
+                    <>
+                      <span className="spinner" />
+                      Submitting...
+                    </>
+                  ) : (
+                    <>
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                      </svg>
+                      Build My Prototype
+                    </>
+                  )}
+                </button>
+
+                <p className="text-xs text-[var(--color-text-muted)]">
+                  We&apos;ll email you a link to your prototype within 30 minutes during business hours.
+                </p>
+              </form>
+            ) : (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="bg-[var(--color-bg-tertiary)] rounded-2xl p-8 border border-[var(--color-primary)]/30"
+              >
+                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-accent)] flex items-center justify-center mx-auto mb-4">
+                  <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+                <h4 className="text-xl font-bold text-white mb-2">We&apos;re on it! 🚀</h4>
+                <p className="text-[var(--color-text-secondary)]">
+                  Check your inbox at <span className="text-white font-medium">{email}</span>.
+                  <br />
+                  Your prototype will be ready within 30 minutes.
+                </p>
+              </motion.div>
+            )}
           </div>
         </motion.div>
       </div>

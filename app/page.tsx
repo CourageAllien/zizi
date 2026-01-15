@@ -1,6 +1,5 @@
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
-import FreeToolOffer from "@/components/FreeToolOffer";
 import Problem from "@/components/Problem";
 import Solution from "@/components/Solution";
 import WhatWeBuild from "@/components/WhatWeBuild";
@@ -18,7 +17,6 @@ export default function Home() {
       <Header />
       <main>
         <Hero />
-        <FreeToolOffer />
         <Problem />
         <Solution />
         <WhatWeBuild />

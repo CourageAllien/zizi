@@ -9,21 +9,23 @@ import { useWorkspace } from '@/lib/workspace-context';
 export default function DirectAccessPage() {
   const router = useRouter();
   const params = useParams();
-  const { login, workspaces } = useWorkspace();
+  const { login, isDataLoaded } = useWorkspace();
   
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
   const [accessCode, setAccessCode] = useState('');
+  const [hasAttempted, setHasAttempted] = useState(false);
 
   // Get code from URL
   const urlCode = params.code as string;
 
   useEffect(() => {
-    if (urlCode) {
-      // Try to auto-login with the code from URL
+    // Wait for data to be loaded from localStorage before attempting login
+    if (isDataLoaded && urlCode && !hasAttempted) {
+      setHasAttempted(true);
       attemptAutoLogin(urlCode.toUpperCase());
     }
-  }, [urlCode]);
+  }, [isDataLoaded, urlCode, hasAttempted]);
 
   const attemptAutoLogin = async (code: string) => {
     setIsLoading(true);

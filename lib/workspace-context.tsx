@@ -153,6 +153,7 @@ interface WorkspaceContextType {
   // Auth
   currentUser: User | null;
   isAdmin: boolean;
+  isDataLoaded: boolean;
   login: (email: string, accessCode?: string) => Promise<boolean>;
   logout: () => void;
   
@@ -289,6 +290,7 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
   const [workspaces, setWorkspaces] = useState<Workspace[]>(initialWorkspaces);
   const [requests, setRequests] = useState<Request[]>(initialRequests);
   const [unreadCount, setUnreadCount] = useState(2);
+  const [isDataLoaded, setIsDataLoaded] = useState(false);
 
   const isAdmin = currentUser?.role === 'admin';
 
@@ -296,16 +298,30 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const savedUser = localStorage.getItem('zizi-user');
     if (savedUser) {
-      setCurrentUser(JSON.parse(savedUser));
+      try {
+        setCurrentUser(JSON.parse(savedUser));
+      } catch (e) {
+        console.error('Failed to parse saved user:', e);
+      }
     }
     const savedWorkspaces = localStorage.getItem('zizi-workspaces');
     if (savedWorkspaces) {
-      setWorkspaces(JSON.parse(savedWorkspaces));
+      try {
+        setWorkspaces(JSON.parse(savedWorkspaces));
+      } catch (e) {
+        console.error('Failed to parse saved workspaces:', e);
+      }
     }
     const savedRequests = localStorage.getItem('zizi-requests');
     if (savedRequests) {
-      setRequests(JSON.parse(savedRequests));
+      try {
+        setRequests(JSON.parse(savedRequests));
+      } catch (e) {
+        console.error('Failed to parse saved requests:', e);
+      }
     }
+    // Mark data as loaded
+    setIsDataLoaded(true);
   }, []);
 
   useEffect(() => {
@@ -620,6 +636,7 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
       value={{
         currentUser,
         isAdmin,
+        isDataLoaded,
         login,
         logout,
         workspaces,
