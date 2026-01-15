@@ -1,9 +1,9 @@
 // Zizi AI Ops - Booking System Constants
 
 export const ZIZI_ZOOM_MEETING = {
-  link: "https://zoom.us/j/YOUR_MEETING_ID", // TODO: Replace with actual Zizi Zoom meeting link
-  meetingId: "YOUR_MEETING_ID",
-  passcode: "YOUR_PASSCODE",
+  link: "https://us04web.zoom.us/j/6679291100?pwd=joYqzB59tVSa4HAay56YXWEiPuE4hI.1",
+  meetingId: "667 929 1100",
+  passcode: "EAvc7L",
 };
 
 export const ZIZI_PRICING = {
