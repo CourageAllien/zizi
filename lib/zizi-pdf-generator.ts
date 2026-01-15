@@ -1,13 +1,13 @@
-// Zizi AI Ops - PDF Generator for AI Insights Documents
+// ZiziCo AI Ops - PDF Generator for AI Insights Documents
 
-import { CompanyInsights, DepartmentInsights, PersonalInsights, ZiziBooking } from "./storage";
+import { CompanyInsights, DepartmentInsights, PersonalInsights, ZiziCoBooking } from "./storage";
 import { ZIZI_PRICING, ZIZI_BRANDING } from "./zizi-constants";
 
 /**
  * Generate a PDF with company-wide AI insights
  */
 export async function generateCompanyInsightsPDF(
-  booking: ZiziBooking,
+  booking: ZiziCoBooking,
   insights: CompanyInsights
 ): Promise<Buffer> {
   try {
@@ -122,7 +122,7 @@ export async function generateCompanyInsightsPDF(
  * Generate a PDF with department-specific AI insights
  */
 export async function generateDepartmentInsightsPDF(
-  booking: ZiziBooking,
+  booking: ZiziCoBooking,
   insights: DepartmentInsights
 ): Promise<Buffer> {
   try {
@@ -191,7 +191,7 @@ export async function generateDepartmentInsightsPDF(
  * Generate a PDF with personal AI insights
  */
 export async function generatePersonalInsightsPDF(
-  booking: ZiziBooking,
+  booking: ZiziCoBooking,
   insights: PersonalInsights
 ): Promise<Buffer> {
   try {
@@ -246,7 +246,7 @@ export async function generatePersonalInsightsPDF(
   }
 }
 
-function generateFallbackPDF(booking: ZiziBooking, insights: CompanyInsights): Buffer {
+function generateFallbackPDF(booking: ZiziCoBooking, insights: CompanyInsights): Buffer {
   const content = `
 ${ZIZI_BRANDING.name.toUpperCase()}
 ${ZIZI_BRANDING.tagline}

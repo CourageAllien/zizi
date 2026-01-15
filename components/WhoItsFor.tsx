@@ -31,7 +31,7 @@ export default function WhoItsFor() {
             Fit Check
           </span>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-white mb-6">
-            Is Zizi right for you?
+            Is ZiziCo right for you?
           </h2>
           <p className="text-lg text-[var(--color-text-secondary)] max-w-xl mx-auto">
             We want to be honest about who we work best with

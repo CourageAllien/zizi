@@ -17,7 +17,7 @@ export default function Footer() {
         >
           <div className="md:col-span-2">
             <a href="#" className="text-2xl font-bold text-white">
-              Zizi
+              ZiziCo
             </a>
             <p className="text-[var(--color-text-secondary)] mt-4 max-w-md leading-relaxed">
               Your AI ops team. We build AI systems that complement the work you
@@ -106,7 +106,7 @@ export default function Footer() {
 
         <div className="mt-16 pt-8 border-t border-[var(--color-border)] flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-sm text-[var(--color-text-muted)]">
-            © {currentYear} Zizi. All rights reserved.
+            © {currentYear} ZiziCo. All rights reserved.
           </p>
           <div className="flex items-center gap-6">
             <a

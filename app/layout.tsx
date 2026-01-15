@@ -19,21 +19,21 @@ const firaCode = Fira_Code({
 });
 
 export const metadata: Metadata = {
-  title: "Zizi — Your AI Ops Team",
+  title: "ZiziCo — Your AI Ops Team",
   description:
     "We build AI systems that complement the work you are doing and helps add revenue. Unlimited builds. Maintained forever.",
   openGraph: {
-    title: "Zizi — Your AI Ops Team",
+    title: "ZiziCo — Your AI Ops Team",
     description:
       "We build AI systems that complement the work you are doing and helps add revenue. Unlimited builds. Maintained forever.",
     url: "https://zizi.so",
-    siteName: "Zizi",
+    siteName: "ZiziCo",
     locale: "en_US",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Zizi — Your AI Ops Team",
+    title: "ZiziCo — Your AI Ops Team",
     description:
       "We build AI systems that complement the work you are doing and helps add revenue.",
   },

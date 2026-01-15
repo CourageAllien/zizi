@@ -1,4 +1,4 @@
-// Zizi AI Ops - Booking System Constants
+// ZiziCo AI Ops - Booking System Constants
 
 export const ZIZI_ZOOM_MEETING = {
   link: "https://us04web.zoom.us/j/6679291100?pwd=joYqzB59tVSa4HAay56YXWEiPuE4hI.1",
@@ -13,7 +13,7 @@ export const ZIZI_PRICING = {
 };
 
 export const ZIZI_BRANDING = {
-  name: "Zizi",
+  name: "ZiziCo",
   tagline: "AI Systems, Built for You",
   primaryColor: "#06B6D4", // Cyan/Teal
   accentColor: "#8B5CF6", // Purple accent
@@ -37,7 +37,7 @@ export const ZIZI_BENEFITS = [
   },
   {
     icon: "Users",
-    text: "Get honest feedback on whether Zizi is right for you",
+    text: "Get honest feedback on whether ZiziCo is right for you",
   },
 ] as const;
 

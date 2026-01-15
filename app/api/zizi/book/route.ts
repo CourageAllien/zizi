@@ -6,9 +6,9 @@ import {
   isTimeSlotAvailable,
   generateGoogleCalendarUrl,
   extractDomainFromEmail,
-  ZiziBooking,
+  ZiziCoBooking,
 } from "@/lib/storage";
-import { sendZiziConfirmationEmail, sendZiziAdminNotification } from "@/lib/resend";
+import { sendZiziCoConfirmationEmail, sendZiziCoAdminNotification } from "@/lib/resend";
 import { ZIZI_ZOOM_MEETING } from "@/lib/zizi-constants";
 
 interface BookingRequest {
@@ -80,7 +80,7 @@ export async function POST(request: NextRequest) {
 
     // Create booking record
     const bookingId = generateBookingId();
-    const booking: ZiziBooking = {
+    const booking: ZiziCoBooking = {
       id: bookingId,
       name,
       email,
@@ -102,7 +102,7 @@ export async function POST(request: NextRequest) {
 
     // Send confirmation email to user (async)
     try {
-      await sendZiziConfirmationEmail({
+      await sendZiziCoConfirmationEmail({
         to: email,
         name,
         jobTitle,
@@ -120,7 +120,7 @@ export async function POST(request: NextRequest) {
 
     // Send admin notification (async)
     try {
-      await sendZiziAdminNotification({
+      await sendZiziCoAdminNotification({
         booking,
         companyInsights,
       });

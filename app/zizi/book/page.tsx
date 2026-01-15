@@ -26,7 +26,7 @@ const BENEFITS = [
   },
   {
     icon: Users,
-    text: "Get honest feedback on whether Zizi is right for you",
+    text: "Get honest feedback on whether ZiziCo is right for you",
   },
 ];
 
@@ -159,7 +159,7 @@ function formatDateISO(date: Date): string {
   return date.toISOString().split("T")[0];
 }
 
-export default function ZiziBookingPage() {
+export default function ZiziCoBookingPage() {
   const [step, setStep] = useState<"calendar" | "form">("calendar");
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
@@ -648,7 +648,7 @@ export default function ZiziBookingPage() {
           className="text-center mt-12"
         >
           <div className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
-            Zizi
+            ZiziCo
           </div>
           <p className="text-sm text-gray-500 mt-1">AI Systems, Built for You</p>
         </motion.div>

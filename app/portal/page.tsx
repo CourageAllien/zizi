@@ -78,7 +78,7 @@ export default function PortalLogin() {
             <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center">
               <Sparkles className="w-7 h-7 text-white" />
             </div>
-            <span className="text-3xl font-display font-bold gradient-text">Zizi</span>
+            <span className="text-3xl font-display font-bold gradient-text">ZiziCo</span>
           </motion.div>
           <h1 className="text-2xl font-bold text-white mb-2">Welcome to Your Portal</h1>
           <p className="text-gray-400">Access your workspace or admin dashboard</p>

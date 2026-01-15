@@ -37,7 +37,7 @@ export default function Differentiation() {
           className="text-center mb-16"
         >
           <span className="inline-block px-4 py-2 bg-[var(--color-primary)]/10 border border-[var(--color-primary)]/30 rounded-full text-sm font-medium text-[var(--color-primary)] mb-6">
-            Why Zizi
+            Why ZiziCo
           </span>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-white mb-4">
             Not an agency. Not a freelancer.
@@ -71,7 +71,7 @@ export default function Differentiation() {
 
               <div className="space-y-2">
                 <span className="text-xs font-medium text-[var(--color-primary)] uppercase tracking-wider">
-                  The Zizi way
+                  The ZiziCo way
                 </span>
                 <p className="text-sm font-medium text-white">{item.zizi}</p>
               </div>

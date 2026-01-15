@@ -1,7 +1,7 @@
 import { WorkspaceProvider } from '@/lib/workspace-context';
 
 export const metadata = {
-  title: 'Zizi Portal — Workspace Management',
+  title: 'ZiziCo Portal — Workspace Management',
   description: 'Manage your AI builds and track progress in real-time.',
 };
 

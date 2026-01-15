@@ -1,4 +1,4 @@
-// Zizi AI Ops - Claude Integration for AI Insights Generation
+// ZiziCo AI Ops - Claude Integration for AI Insights Generation
 
 import Anthropic from "@anthropic-ai/sdk";
 import {
@@ -64,7 +64,7 @@ export async function generateCompanyInsights(
     return generateChallengeBasedInsights(challenge, idealOutcome);
   }
 
-  const prompt = `You are a friendly AI consultant at Zizi, an AI ops agency. Based on the information provided, suggest how AI can help this business.
+  const prompt = `You are a friendly AI consultant at ZiziCo, an AI ops agency. Based on the information provided, suggest how AI can help this business.
 
 ## INFORMATION PROVIDED
 - Company Website: ${domain}
@@ -129,7 +129,7 @@ export async function generateDepartmentInsights(
   domain: string,
   challenge: string
 ): Promise<DepartmentInsights> {
-  const prompt = `You are an AI consultant at Zizi. Analyze how AI can help a specific department based on the job title.
+  const prompt = `You are an AI consultant at ZiziCo. Analyze how AI can help a specific department based on the job title.
 
 ## INPUTS
 - Job Title: ${jobTitle}
@@ -190,7 +190,7 @@ export async function generatePersonalInsights(
   challenge: string,
   idealOutcome?: string
 ): Promise<PersonalInsights> {
-  const prompt = `You are an AI consultant at Zizi. Provide personalized AI assistance recommendations for an individual based on their role.
+  const prompt = `You are an AI consultant at ZiziCo. Provide personalized AI assistance recommendations for an individual based on their role.
 
 ## INPUTS
 - Job Title: ${jobTitle}
@@ -252,7 +252,7 @@ async function generateChallengeBasedInsights(
   challenge: string,
   idealOutcome?: string
 ): Promise<CompanyInsights> {
-  const prompt = `You are a friendly AI consultant at Zizi, an AI ops agency. Someone reached out about getting AI help for their business.
+  const prompt = `You are a friendly AI consultant at ZiziCo, an AI ops agency. Someone reached out about getting AI help for their business.
 
 ## WHAT THEY TOLD US
 - Their Challenge: "${challenge}"

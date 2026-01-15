@@ -276,7 +276,7 @@ function ConfirmedContent() {
           className="text-center mt-12"
         >
           <div className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
-            Zizi
+            ZiziCo
           </div>
           <p className="text-sm text-gray-500 mt-1">
             AI Systems, Built for You

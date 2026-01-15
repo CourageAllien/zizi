@@ -1,4 +1,4 @@
-// Zizi AI Ops - Storage for Bookings
+// ZiziCo AI Ops - Storage for Bookings
 
 export interface AIInsights {
   companyInsights?: CompanyInsights;
@@ -33,7 +33,7 @@ export interface PersonalInsights {
   quickWins: string[];
 }
 
-export interface ZiziBooking {
+export interface ZiziCoBooking {
   id: string;
   name: string;
   email: string;
@@ -52,24 +52,24 @@ export interface ZiziBooking {
 
 // In-memory storage for development
 // In production, replace with database (e.g., Supabase, PostgreSQL, etc.)
-const bookings: Map<string, ZiziBooking> = new Map();
+const bookings: Map<string, ZiziCoBooking> = new Map();
 
 export function generateBookingId(): string {
   return `zizi_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
 }
 
-export async function saveBooking(booking: ZiziBooking): Promise<ZiziBooking> {
+export async function saveBooking(booking: ZiziCoBooking): Promise<ZiziCoBooking> {
   bookings.set(booking.id, booking);
   return booking;
 }
 
-export async function getBooking(id: string): Promise<ZiziBooking | null> {
+export async function getBooking(id: string): Promise<ZiziCoBooking | null> {
   return bookings.get(id) || null;
 }
 
 export async function getBookingByEmail(
   email: string
-): Promise<ZiziBooking | null> {
+): Promise<ZiziCoBooking | null> {
   for (const booking of bookings.values()) {
     if (booking.email === email) {
       return booking;
@@ -80,8 +80,8 @@ export async function getBookingByEmail(
 
 export async function updateBooking(
   id: string,
-  updates: Partial<ZiziBooking>
-): Promise<ZiziBooking | null> {
+  updates: Partial<ZiziCoBooking>
+): Promise<ZiziCoBooking | null> {
   const existing = bookings.get(id);
   if (!existing) {
     return null;
@@ -92,8 +92,8 @@ export async function updateBooking(
   return updated;
 }
 
-export async function getBookingsForDate(date: string): Promise<ZiziBooking[]> {
-  const result: ZiziBooking[] = [];
+export async function getBookingsForDate(date: string): Promise<ZiziCoBooking[]> {
+  const result: ZiziCoBooking[] = [];
   for (const booking of bookings.values()) {
     if (booking.date === date) {
       result.push(booking);
@@ -102,7 +102,7 @@ export async function getBookingsForDate(date: string): Promise<ZiziBooking[]> {
   return result;
 }
 
-export async function getAllBookings(): Promise<ZiziBooking[]> {
+export async function getAllBookings(): Promise<ZiziCoBooking[]> {
   return Array.from(bookings.values());
 }
 
@@ -153,7 +153,7 @@ export function formatBookingTime(time: string): string {
 }
 
 // Generate a calendar URL for adding to Google Calendar
-export function generateGoogleCalendarUrl(booking: ZiziBooking): string {
+export function generateGoogleCalendarUrl(booking: ZiziCoBooking): string {
   const startDate = new Date(`${booking.date}T${booking.time}:00`);
   const endDate = new Date(startDate.getTime() + 15 * 60 * 1000); // 15 minutes
 
@@ -162,7 +162,7 @@ export function generateGoogleCalendarUrl(booking: ZiziBooking): string {
 
   const params = new URLSearchParams({
     action: "TEMPLATE",
-    text: `Zizi Discovery Call with ${booking.name}`,
+    text: `ZiziCo Discovery Call with ${booking.name}`,
     dates: `${formatDate(startDate)}/${formatDate(endDate)}`,
     details: `Discovery call to discuss: ${booking.challenge}\n\nZoom link will be sent via email.`,
     location: "Zoom (link in email)",
@@ -182,14 +182,14 @@ export function extractDomainFromEmail(email: string): string {
 
 // Get bookings that need reminders
 export async function getBookingsNeedingReminders(): Promise<{
-  dayBefore: ZiziBooking[];
-  twoHours: ZiziBooking[];
-  twentyMins: ZiziBooking[];
+  dayBefore: ZiziCoBooking[];
+  twoHours: ZiziCoBooking[];
+  twentyMins: ZiziCoBooking[];
 }> {
   const now = new Date();
-  const dayBefore: ZiziBooking[] = [];
-  const twoHours: ZiziBooking[] = [];
-  const twentyMins: ZiziBooking[] = [];
+  const dayBefore: ZiziCoBooking[] = [];
+  const twoHours: ZiziCoBooking[] = [];
+  const twentyMins: ZiziCoBooking[] = [];
 
   for (const booking of bookings.values()) {
     const meetingTime = new Date(`${booking.date}T${booking.time}:00`);

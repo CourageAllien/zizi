@@ -1,7 +1,7 @@
-// Zizi AI Ops - Email Templates using Resend
+// ZiziCo AI Ops - Email Templates using Resend
 
 import { Resend } from "resend";
-import { CompanyInsights, DepartmentInsights, PersonalInsights, ZiziBooking } from "./storage";
+import { CompanyInsights, DepartmentInsights, PersonalInsights, ZiziCoBooking } from "./storage";
 import { ZIZI_BRANDING, ZIZI_ZOOM_MEETING, ZIZI_PRICING } from "./zizi-constants";
 
 // Workspace types for email
@@ -25,7 +25,7 @@ interface ContactEmailProps {
   message: string;
 }
 
-interface ZiziConfirmationEmailProps {
+interface ZiziCoConfirmationEmailProps {
   to: string;
   name: string;
   jobTitle: string;
@@ -35,12 +35,12 @@ interface ZiziConfirmationEmailProps {
   companyInsights: CompanyInsights | null;
 }
 
-interface ZiziAdminNotificationProps {
-  booking: ZiziBooking;
+interface ZiziCoAdminNotificationProps {
+  booking: ZiziCoBooking;
   companyInsights: CompanyInsights | null;
 }
 
-interface ZiziReminderEmailProps {
+interface ZiziCoReminderEmailProps {
   to: string;
   name: string;
   jobTitle: string;
@@ -105,9 +105,9 @@ export async function sendContactEmail({
 }
 
 /**
- * Send Zizi booking confirmation email with company-wide AI insights
+ * Send ZiziCo booking confirmation email with company-wide AI insights
  */
-export async function sendZiziConfirmationEmail({
+export async function sendZiziCoConfirmationEmail({
   to,
   name,
   jobTitle,
@@ -115,7 +115,7 @@ export async function sendZiziConfirmationEmail({
   time,
   zoomLink,
   companyInsights,
-}: ZiziConfirmationEmailProps): Promise<{ success: boolean; error?: string }> {
+}: ZiziCoConfirmationEmailProps): Promise<{ success: boolean; error?: string }> {
   const firstName = name.split(" ")[0];
   const formattedDate = formatDate(date);
   const formattedTime = formatTime(time);
@@ -265,10 +265,10 @@ export async function sendZiziConfirmationEmail({
 /**
  * Send admin notification when a new booking is made
  */
-export async function sendZiziAdminNotification({
+export async function sendZiziCoAdminNotification({
   booking,
   companyInsights,
-}: ZiziAdminNotificationProps): Promise<{ success: boolean; error?: string }> {
+}: ZiziCoAdminNotificationProps): Promise<{ success: boolean; error?: string }> {
   const formattedDate = formatDate(booking.date);
   const formattedTime = formatTime(booking.time);
 
@@ -276,7 +276,7 @@ export async function sendZiziAdminNotification({
     await resend.emails.send({
       from: FROM_EMAIL,
       to: ADMIN_EMAIL,
-      subject: `🔔 New Zizi Booking: ${booking.name} - ${booking.jobTitle}`,
+      subject: `🔔 New ZiziCo Booking: ${booking.name} - ${booking.jobTitle}`,
       html: `
 <!DOCTYPE html>
 <html>
@@ -288,7 +288,7 @@ export async function sendZiziAdminNotification({
     
     <!-- Header -->
     <div style="background: linear-gradient(135deg, #06B6D4, #0891B2); padding: 25px; text-align: center;">
-      <h1 style="color: white; margin: 0; font-size: 24px;">New Zizi Booking! 🎉</h1>
+      <h1 style="color: white; margin: 0; font-size: 24px;">New ZiziCo Booking! 🎉</h1>
     </div>
     
     <div style="padding: 30px;">
@@ -391,7 +391,7 @@ export async function sendZiziAdminNotification({
  * - 2 hours before: Personal insights (focus on role)
  * - 20 minutes before: Personal insights (quick summary)
  */
-export async function sendZiziReminderEmail({
+export async function sendZiziCoReminderEmail({
   to,
   name,
   jobTitle,
@@ -401,7 +401,7 @@ export async function sendZiziReminderEmail({
   reminderType,
   departmentInsights,
   personalInsights,
-}: ZiziReminderEmailProps): Promise<{ success: boolean; error?: string }> {
+}: ZiziCoReminderEmailProps): Promise<{ success: boolean; error?: string }> {
   const firstName = name.split(" ")[0];
   const formattedTime = formatTime(time);
   const formattedDate = formatDate(date);
@@ -570,7 +570,7 @@ export async function sendWorkspaceWelcomeEmail({
     await resend.emails.send({
       from: FROM_EMAIL,
       to,
-      subject: `🚀 Welcome to Zizi! Your ${companyName} Workspace is Ready`,
+      subject: `🚀 Welcome to ZiziCo! Your ${companyName} Workspace is Ready`,
       html: `
 <!DOCTYPE html>
 <html>
@@ -583,7 +583,7 @@ export async function sendWorkspaceWelcomeEmail({
     
     <!-- Header -->
     <div style="text-align: center; margin-bottom: 40px;">
-      <h1 style="color: #06B6D4; font-size: 32px; margin: 0; font-weight: bold;">Zizi</h1>
+      <h1 style="color: #06B6D4; font-size: 32px; margin: 0; font-weight: bold;">ZiziCo</h1>
       <p style="color: #9ca3af; margin: 5px 0 0;">Your AI Ops Team</p>
     </div>
     
@@ -683,7 +683,7 @@ export async function sendWorkspaceWelcomeEmail({
     <!-- Footer -->
     <div style="text-align: center; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
       <p style="color: #6b7280; font-size: 12px; margin: 0;">
-        © ${new Date().getFullYear()} Zizi. All rights reserved.
+        © ${new Date().getFullYear()} ZiziCo. All rights reserved.
       </p>
     </div>
     

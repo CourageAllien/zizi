@@ -346,7 +346,7 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
       setCurrentUser({
         id: 'admin-1',
         email: 'admin@zizi.so',
-        name: 'Zizi Admin',
+        name: 'ZiziCo Admin',
         role: 'admin',
         createdAt: new Date()
       });
