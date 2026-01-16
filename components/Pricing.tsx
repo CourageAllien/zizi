@@ -61,9 +61,7 @@ export default function Pricing() {
                 </p>
               </div>
               <a
-                href="https://calendly.com/courageoutbounder/ai-chat"
-                target="_blank"
-                rel="noopener noreferrer"
+                href="/zizi/book"
                 className="btn-primary text-base px-8 py-4 text-center animate-pulse-glow"
               >
                 Get Started Today

@@ -122,9 +122,7 @@ export default function Hero() {
           className="flex flex-col sm:flex-row items-center justify-center gap-4"
         >
           <a
-            href="https://calendly.com/courageoutbounder/ai-chat"
-            target="_blank"
-            rel="noopener noreferrer"
+            href="/zizi/book"
             className="btn-primary text-base px-8 py-4"
           >
             Get Started

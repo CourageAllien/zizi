@@ -67,9 +67,7 @@ export default function Header() {
             Book a Call
           </a>
           <a
-            href="https://calendly.com/courageoutbounder/ai-chat"
-            target="_blank"
-            rel="noopener noreferrer"
+            href="/zizi/book"
             className="btn-primary text-sm"
           >
             Get Started
