@@ -30,7 +30,9 @@ export default function CTA() {
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <a
-              href="#pricing"
+              href="https://calendly.com/courageoutbounder/ai-chat"
+              target="_blank"
+              rel="noopener noreferrer"
               className="btn-primary text-base px-10 py-4"
             >
               Get Started — $2,199/mo

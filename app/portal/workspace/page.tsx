@@ -207,17 +207,114 @@ export default function ClientWorkspace() {
               </button>
 
               {/* Notifications */}
-              <button
-                onClick={() => { setShowNotifications(!showNotifications); markAsRead(); }}
-                className="p-2 rounded-lg hover:bg-white/10 text-gray-400 hover:text-white transition-colors relative"
-              >
-                <Bell className="w-5 h-5" />
-                {unreadCount > 0 && (
-                  <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full text-xs flex items-center justify-center text-white">
-                    {unreadCount}
-                  </span>
-                )}
-              </button>
+              <div className="relative">
+                <button
+                  onClick={(e) => { 
+                    e.stopPropagation();
+                    setShowNotifications(!showNotifications); 
+                    if (!showNotifications) markAsRead(); 
+                  }}
+                  className="p-2 rounded-lg hover:bg-white/10 text-gray-400 hover:text-white transition-colors relative"
+                >
+                  <Bell className="w-5 h-5" />
+                  {unreadCount > 0 && (
+                    <span className="absolute -top-1 -right-1 w-5 h-5 bg-primary rounded-full text-xs flex items-center justify-center text-white animate-pulse">
+                      {unreadCount}
+                    </span>
+                  )}
+                </button>
+
+                {/* Notifications Dropdown Backdrop */}
+                <AnimatePresence>
+                  {showNotifications && (
+                    <>
+                      <motion.div 
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="fixed inset-0 z-40" 
+                        onClick={() => setShowNotifications(false)}
+                      />
+                      <motion.div
+                        initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                        transition={{ duration: 0.15 }}
+                        className="absolute right-0 top-full mt-2 w-80 bg-background-secondary border border-white/10 rounded-xl shadow-2xl overflow-hidden z-50"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                      <div className="p-4 border-b border-white/10">
+                        <div className="flex items-center justify-between">
+                          <h3 className="font-semibold text-white">Notifications</h3>
+                          <button
+                            onClick={() => setShowNotifications(false)}
+                            className="p-1 hover:bg-white/10 rounded-lg transition-colors"
+                          >
+                            <X className="w-4 h-4 text-gray-400" />
+                          </button>
+                        </div>
+                      </div>
+                      
+                      <div className="max-h-80 overflow-y-auto">
+                        {allRequests.flatMap(r => r.updates).length === 0 ? (
+                          <div className="p-6 text-center">
+                            <Bell className="w-10 h-10 text-gray-600 mx-auto mb-3" />
+                            <p className="text-gray-400 text-sm">No notifications yet</p>
+                            <p className="text-gray-500 text-xs mt-1">Updates will appear here</p>
+                          </div>
+                        ) : (
+                          <div className="divide-y divide-white/5">
+                            {allRequests
+                              .flatMap(r => r.updates.map(u => ({ ...u, requestTitle: r.title, requestId: r.id })))
+                              .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
+                              .slice(0, 10)
+                              .map((update, index) => (
+                                <div
+                                  key={`${update.requestId}-${update.id}-${index}`}
+                                  onClick={() => {
+                                    const request = allRequests.find(r => r.id === update.requestId);
+                                    if (request) {
+                                      setSelectedRequest(request);
+                                      setShowNotifications(false);
+                                    }
+                                  }}
+                                  className="p-3 hover:bg-white/5 cursor-pointer transition-colors"
+                                >
+                                  <div className="flex items-start gap-3">
+                                    <div className={`w-2 h-2 rounded-full mt-2 flex-shrink-0 ${
+                                      update.type === 'milestone' ? 'bg-primary' :
+                                      update.type === 'completed' ? 'bg-green-400' :
+                                      update.type === 'alert' ? 'bg-amber-400' : 'bg-gray-400'
+                                    }`} />
+                                    <div className="flex-1 min-w-0">
+                                      <p className="text-sm text-white line-clamp-2">{update.message}</p>
+                                      <p className="text-xs text-gray-500 mt-1">{update.requestTitle}</p>
+                                      <p className="text-xs text-gray-600 mt-0.5">
+                                        {new Date(update.timestamp).toLocaleDateString('en-GB', {
+                                          day: '2-digit',
+                                          month: 'short',
+                                          hour: '2-digit',
+                                          minute: '2-digit'
+                                        })}
+                                      </p>
+                                    </div>
+                                  </div>
+                                </div>
+                              ))}
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="p-3 border-t border-white/10 bg-background-primary/50">
+                        <p className="text-xs text-gray-500 text-center">
+                          Click a notification to view details
+                        </p>
+                      </div>
+                    </motion.div>
+                    </>
+                  )}
+                </AnimatePresence>
+              </div>
 
               {/* Logout */}
               <button
@@ -874,8 +971,8 @@ function RequestDetailModal({
         <div className="mb-6">
           <h3 className="text-sm font-medium text-gray-400 mb-3">Activity Timeline</h3>
           <div className="space-y-3">
-            {request.updates.slice().reverse().map((update) => (
-              <div key={update.id} className="flex gap-3">
+            {request.updates.slice().reverse().map((update, index) => (
+              <div key={`${request.id}-${update.id}-${index}`} className="flex gap-3">
                 <div className={`w-2 h-2 rounded-full mt-2 ${
                   update.type === 'completed' ? 'bg-green-500' :
                   update.type === 'milestone' ? 'bg-primary' :

@@ -215,7 +215,7 @@ export default function WhatWeBuild() {
           className="text-center text-[var(--color-text-secondary)] mt-12"
         >
           Don&apos;t see what you need?{" "}
-          <a href="#pricing" className="text-[var(--color-primary)] hover:underline">
+          <a href="/tell-us" className="text-[var(--color-primary)] hover:underline">
             Tell us your problem
           </a>{" "}
           — we&apos;ll build it.

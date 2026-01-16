@@ -591,8 +591,8 @@ export default function AdminRequestsPage() {
               <div>
                 <h3 className="text-sm font-medium text-gray-400 mb-3">Activity Log</h3>
                 <div className="space-y-2 max-h-48 overflow-y-auto">
-                  {selectedRequest.updates.slice().reverse().map((update) => (
-                    <div key={update.id} className="flex items-start gap-3 p-3 bg-background-secondary rounded-lg">
+                  {selectedRequest.updates.slice().reverse().map((update, index) => (
+                    <div key={`${selectedRequest.id}-${update.id}-${index}`} className="flex items-start gap-3 p-3 bg-background-secondary rounded-lg">
                       <div className={`w-2 h-2 rounded-full mt-2 ${
                         update.type === 'completed' ? 'bg-green-500' :
                         update.type === 'milestone' ? 'bg-primary' :
