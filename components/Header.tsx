@@ -59,12 +59,10 @@ export default function Header() {
 
         <div className="flex items-center gap-4">
           <a
-            href="https://calendly.com/courageoutbounder/ai-chat"
-            target="_blank"
-            rel="noopener noreferrer"
+            href="/free-tool"
             className="hidden sm:inline-flex text-sm font-medium text-[var(--color-text-secondary)] hover:text-white transition-colors"
           >
-            Book a Call
+            Get A Free Tool
           </a>
           <a
             href="/zizi/book"
