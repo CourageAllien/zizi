@@ -4,6 +4,29 @@ import { Resend } from "resend";
 import { CompanyInsights, DepartmentInsights, PersonalInsights, ZiziCoBooking } from "./storage";
 import { ZIZI_BRANDING, ZIZI_ZOOM_MEETING, ZIZI_PRICING } from "./zizi-constants";
 
+// Partner email types
+interface PartnerBookingEmailProps {
+  to: string;
+  name: string;
+  company: string;
+  role: string;
+  currentCampaigns: string;
+  goals?: string;
+  date: string;
+  time: string;
+  bookingId: string;
+}
+
+interface PartnerTrialRequestEmailProps {
+  to: string;
+  name: string;
+  buildType: string;
+  description: string;
+  website?: string;
+  requestId: string;
+  stripePaymentLink: string;
+}
+
 // Workspace types for email
 interface WorkspaceWelcomeEmailProps {
   to: string;
@@ -697,5 +720,511 @@ export async function sendWorkspaceWelcomeEmail({
   } catch (error) {
     console.error("Error sending workspace welcome email:", error);
     return { success: false, error: "Failed to send workspace welcome email" };
+  }
+}
+
+/**
+ * Send Partner booking confirmation email
+ */
+export async function sendPartnerBookingConfirmationEmail({
+  to,
+  name,
+  company,
+  role,
+  currentCampaigns,
+  goals,
+  date,
+  time,
+  bookingId,
+}: PartnerBookingEmailProps): Promise<{ success: boolean; error?: string }> {
+  const firstName = name.split(" ")[0];
+  const formattedDate = formatDate(date);
+  const formattedTime = formatTime(time);
+
+  try {
+    console.log("Resend: Sending partner booking confirmation to:", to, "from:", FROM_EMAIL);
+    const result = await resend.emails.send({
+      from: FROM_EMAIL,
+      to,
+      subject: `Your ZiziCo Strategy Call is Confirmed! 🎉`,
+      html: `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #0a0a0a;">
+  <div style="max-width: 600px; margin: 0 auto; background: linear-gradient(135deg, #0a0a0a 0%, #0d1a0d 100%); padding: 40px 30px;">
+    
+    <!-- Header -->
+    <div style="text-align: center; margin-bottom: 40px;">
+      <h1 style="color: #22c55e; font-size: 32px; margin: 0; font-weight: bold;">ZiziCo</h1>
+      <p style="color: #9ca3af; margin: 5px 0 0;">Your AI Sales & Marketing Partner</p>
+    </div>
+    
+    <!-- Confirmation Badge -->
+    <div style="text-align: center; margin-bottom: 30px;">
+      <div style="display: inline-block; background: linear-gradient(135deg, #22c55e, #16a34a); padding: 15px 30px; border-radius: 50px;">
+        <span style="color: white; font-size: 18px; font-weight: 600;">✓ Call Confirmed!</span>
+      </div>
+    </div>
+    
+    <!-- Greeting -->
+    <p style="color: #e5e7eb; font-size: 18px; margin-bottom: 25px;">
+      Hey ${firstName}! 👋
+    </p>
+    
+    <p style="color: #9ca3af; font-size: 16px; line-height: 1.6; margin-bottom: 30px;">
+      Your strategy call is locked in. We're excited to learn about ${company}'s campaigns and show you how AI-powered sales assets can accelerate your results.
+    </p>
+    
+    <!-- Meeting Details Box -->
+    <div style="background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.3); border-radius: 16px; padding: 25px; margin-bottom: 30px;">
+      <h3 style="color: #22c55e; margin: 0 0 20px; font-size: 16px;">📅 YOUR CALL DETAILS</h3>
+      
+      <table style="width: 100%;">
+        <tr>
+          <td style="color: #9ca3af; padding: 8px 0;">Date:</td>
+          <td style="color: #e5e7eb; font-weight: 600; text-align: right;">${formattedDate}</td>
+        </tr>
+        <tr>
+          <td style="color: #9ca3af; padding: 8px 0;">Time:</td>
+          <td style="color: #e5e7eb; font-weight: 600; text-align: right;">${formattedTime} (20 min)</td>
+        </tr>
+        <tr>
+          <td style="color: #9ca3af; padding: 8px 0;">Location:</td>
+          <td style="color: #e5e7eb; font-weight: 600; text-align: right;">Zoom Meeting</td>
+        </tr>
+      </table>
+      
+      <div style="margin-top: 20px; text-align: center;">
+        <a href="${ZIZI_ZOOM_MEETING.link}" style="display: inline-block; background: #22c55e; color: white; text-decoration: none; padding: 12px 30px; border-radius: 8px; font-weight: 600;">
+          Join Zoom Call →
+        </a>
+      </div>
+    </div>
+    
+    <!-- What We'll Cover -->
+    <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px; padding: 25px; margin-bottom: 30px;">
+      <h3 style="color: #e5e7eb; margin: 0 0 15px; font-size: 18px;">📋 What We'll Cover</h3>
+      
+      <ul style="color: #9ca3af; padding-left: 20px; line-height: 1.8; margin: 0;">
+        <li>Your current marketing & sales campaigns</li>
+        <li>Where AI-powered assets can make the biggest impact</li>
+        <li>How our trial-to-partnership model works</li>
+        <li>Next steps if it's a good fit</li>
+      </ul>
+    </div>
+    
+    <!-- Before the Call -->
+    <div style="margin-bottom: 30px;">
+      <h3 style="color: #e5e7eb; margin: 0 0 15px; font-size: 18px;">💡 Before Our Call</h3>
+      
+      <p style="color: #9ca3af; line-height: 1.6; margin: 0;">
+        Think about which campaign or sales initiative you'd like us to focus on first. The more specific you can be, the better we can tailor our solutions.
+      </p>
+    </div>
+    
+    <!-- Pricing Footer -->
+    <div style="text-align: center; padding: 25px 0; border-top: 1px solid rgba(255,255,255,0.1); margin-top: 20px;">
+      <p style="color: #9ca3af; font-size: 14px; margin: 0 0 5px;">
+        Trial build <span style="color: #22c55e; font-weight: 600;">$750</span> • Partnership <span style="color: #22c55e; font-weight: 600;">$2,500/mo</span>
+      </p>
+      <p style="color: #6b7280; font-size: 12px; margin: 0;">
+        Unlimited AI-powered sales assets for your campaigns
+      </p>
+    </div>
+    
+    <!-- Footer -->
+    <div style="text-align: center; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
+      <p style="color: #6b7280; font-size: 12px; margin: 0;">
+        Reference ID: ${bookingId}<br>
+        Need to reschedule? Reply to this email.
+      </p>
+      <p style="color: #6b7280; font-size: 12px; margin: 10px 0 0;">
+        © ${new Date().getFullYear()} ZiziCo. All rights reserved.
+      </p>
+    </div>
+    
+  </div>
+</body>
+</html>
+      `,
+    });
+
+    console.log("Resend: Partner booking confirmation result:", JSON.stringify(result));
+    
+    if (result.error) {
+      console.error("Resend API error:", result.error);
+      return { success: false, error: result.error.message };
+    }
+
+    return { success: true };
+  } catch (error) {
+    console.error("Error sending partner booking confirmation email:", error);
+    return { success: false, error: String(error) };
+  }
+}
+
+/**
+ * Send admin notification when a new partner booking is made
+ */
+export async function sendPartnerBookingAdminNotification({
+  to,
+  name,
+  company,
+  role,
+  currentCampaigns,
+  goals,
+  date,
+  time,
+  bookingId,
+}: PartnerBookingEmailProps): Promise<{ success: boolean; error?: string }> {
+  const formattedDate = formatDate(date);
+  const formattedTime = formatTime(time);
+
+  try {
+    console.log("Resend: Sending partner booking admin notification to:", ADMIN_EMAIL);
+    const result = await resend.emails.send({
+      from: FROM_EMAIL,
+      to: ADMIN_EMAIL,
+      subject: `📅 Partner Call Booked: ${name} from ${company}`,
+      html: `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+</head>
+<body style="margin: 0; padding: 20px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f3f4f6;">
+  <div style="max-width: 600px; margin: 0 auto; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+    
+    <!-- Header -->
+    <div style="background: linear-gradient(135deg, #22c55e, #16a34a); padding: 25px; text-align: center;">
+      <h1 style="color: white; margin: 0; font-size: 24px;">New Partner Strategy Call! 🎉</h1>
+    </div>
+    
+    <div style="padding: 30px;">
+      
+      <!-- Contact Details -->
+      <h2 style="color: #1f2937; margin: 0 0 15px; font-size: 18px; border-bottom: 2px solid #e5e7eb; padding-bottom: 10px;">
+        👤 Contact Details
+      </h2>
+      
+      <table style="width: 100%; margin-bottom: 25px;">
+        <tr>
+          <td style="color: #6b7280; padding: 8px 0; width: 120px;">Name:</td>
+          <td style="color: #1f2937; font-weight: 600;">${name}</td>
+        </tr>
+        <tr>
+          <td style="color: #6b7280; padding: 8px 0;">Email:</td>
+          <td style="color: #1f2937;"><a href="mailto:${to}" style="color: #22c55e;">${to}</a></td>
+        </tr>
+        <tr>
+          <td style="color: #6b7280; padding: 8px 0;">Company:</td>
+          <td style="color: #1f2937; font-weight: 600;">${company}</td>
+        </tr>
+        <tr>
+          <td style="color: #6b7280; padding: 8px 0;">Role:</td>
+          <td style="color: #1f2937; font-weight: 600;">${role}</td>
+        </tr>
+      </table>
+      
+      <!-- Meeting Details -->
+      <h2 style="color: #1f2937; margin: 0 0 15px; font-size: 18px; border-bottom: 2px solid #e5e7eb; padding-bottom: 10px;">
+        📅 Meeting Details
+      </h2>
+      
+      <table style="width: 100%; margin-bottom: 25px;">
+        <tr>
+          <td style="color: #6b7280; padding: 8px 0; width: 120px;">Date:</td>
+          <td style="color: #1f2937; font-weight: 600;">${formattedDate}</td>
+        </tr>
+        <tr>
+          <td style="color: #6b7280; padding: 8px 0;">Time:</td>
+          <td style="color: #1f2937; font-weight: 600;">${formattedTime}</td>
+        </tr>
+        <tr>
+          <td style="color: #6b7280; padding: 8px 0;">Zoom:</td>
+          <td><a href="${ZIZI_ZOOM_MEETING.link}" style="color: #22c55e;">Join Meeting</a></td>
+        </tr>
+      </table>
+      
+      <!-- Current Campaigns -->
+      <h2 style="color: #1f2937; margin: 0 0 15px; font-size: 18px; border-bottom: 2px solid #e5e7eb; padding-bottom: 10px;">
+        📋 Current Campaigns
+      </h2>
+      
+      <div style="background: #f9fafb; border-left: 4px solid #22c55e; padding: 15px; margin-bottom: 25px; border-radius: 0 8px 8px 0;">
+        <p style="color: #374151; margin: 0; line-height: 1.6;">${currentCampaigns}</p>
+      </div>
+      
+      ${goals ? `
+      <h3 style="color: #6b7280; margin: 0 0 10px; font-size: 14px;">Goals:</h3>
+      <div style="background: #f9fafb; padding: 15px; margin-bottom: 25px; border-radius: 8px;">
+        <p style="color: #374151; margin: 0; line-height: 1.6;">${goals}</p>
+      </div>
+      ` : ""}
+      
+    </div>
+    
+    <!-- Footer -->
+    <div style="background: #f3f4f6; padding: 15px; text-align: center;">
+      <p style="color: #9ca3af; font-size: 12px; margin: 0;">
+        Booking ID: ${bookingId} | Created: ${new Date().toLocaleString()}
+      </p>
+    </div>
+    
+  </div>
+</body>
+</html>
+      `,
+    });
+
+    console.log("Resend: Partner booking admin notification result:", JSON.stringify(result));
+    
+    if (result.error) {
+      console.error("Resend API error:", result.error);
+      return { success: false, error: result.error.message };
+    }
+
+    return { success: true };
+  } catch (error) {
+    console.error("Error sending partner booking admin notification:", error);
+    return { success: false, error: String(error) };
+  }
+}
+
+/**
+ * Send Partner trial request confirmation email with Stripe payment link
+ */
+export async function sendPartnerTrialConfirmationEmail({
+  to,
+  name,
+  buildType,
+  description,
+  website,
+  requestId,
+  stripePaymentLink,
+}: PartnerTrialRequestEmailProps): Promise<{ success: boolean; error?: string }> {
+  const firstName = name.split(" ")[0];
+  const paymentUrl = `${stripePaymentLink}?prefilled_email=${encodeURIComponent(to)}&client_reference_id=${requestId}`;
+
+  try {
+    console.log("Resend: Sending partner trial confirmation to:", to, "from:", FROM_EMAIL);
+    const result = await resend.emails.send({
+      from: FROM_EMAIL,
+      to,
+      subject: `We received your trial build request! 🎉`,
+      html: `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #0a0a0a;">
+  <div style="max-width: 600px; margin: 0 auto; background: linear-gradient(135deg, #0a0a0a 0%, #0d1a0d 100%); padding: 40px 30px;">
+    
+    <!-- Header -->
+    <div style="text-align: center; margin-bottom: 40px;">
+      <h1 style="color: #22c55e; font-size: 32px; margin: 0; font-weight: bold;">ZiziCo</h1>
+      <p style="color: #9ca3af; margin: 5px 0 0;">Your AI Sales & Marketing Partner</p>
+    </div>
+    
+    <!-- Success Badge -->
+    <div style="text-align: center; margin-bottom: 30px;">
+      <div style="display: inline-block; background: rgba(34, 197, 94, 0.2); border: 1px solid rgba(34, 197, 94, 0.4); padding: 15px 30px; border-radius: 50px;">
+        <span style="color: #22c55e; font-size: 18px; font-weight: 600;">✓ Request Received!</span>
+      </div>
+    </div>
+    
+    <!-- Greeting -->
+    <p style="color: #e5e7eb; font-size: 18px; margin-bottom: 25px;">
+      Hey ${firstName}! 👋
+    </p>
+    
+    <p style="color: #9ca3af; font-size: 16px; line-height: 1.6; margin-bottom: 30px;">
+      Thanks for your interest in a trial build. We're excited to work with you!
+    </p>
+    
+    <!-- Payment CTA Box -->
+    <div style="background: linear-gradient(135deg, rgba(34, 197, 94, 0.15), rgba(34, 197, 94, 0.05)); border: 2px solid rgba(34, 197, 94, 0.4); border-radius: 16px; padding: 30px; margin-bottom: 30px; text-align: center;">
+      <h3 style="color: #22c55e; margin: 0 0 15px; font-size: 20px;">Ready to get started?</h3>
+      <p style="color: #9ca3af; margin: 0 0 20px; font-size: 14px;">
+        Complete your payment to kick off your trial build:
+      </p>
+      <a href="${paymentUrl}" style="display: inline-block; background: linear-gradient(135deg, #22c55e, #16a34a); color: white; text-decoration: none; padding: 16px 40px; border-radius: 12px; font-weight: 600; font-size: 18px; box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3);">
+        Pay $750 — Start Your Build →
+      </a>
+    </div>
+    
+    <!-- What Happens Next -->
+    <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px; padding: 25px; margin-bottom: 30px;">
+      <h3 style="color: #e5e7eb; margin: 0 0 15px; font-size: 18px;">📋 What happens next?</h3>
+      
+      <ol style="color: #9ca3af; padding-left: 20px; line-height: 2; margin: 0;">
+        <li>Complete your payment using the button above</li>
+        <li>We'll start building immediately (within 24 hours)</li>
+        <li>Your AI-powered asset will be ready in 5-7 days</li>
+        <li>Love it? Become a partner for unlimited builds</li>
+      </ol>
+    </div>
+    
+    <!-- Request Summary -->
+    <div style="margin-bottom: 30px;">
+      <h3 style="color: #e5e7eb; margin: 0 0 15px; font-size: 18px;">Your Request Summary</h3>
+      
+      <p style="color: #9ca3af; margin: 0 0 10px;">
+        <strong style="color: #e5e7eb;">Build Type:</strong> ${buildType}
+      </p>
+      
+      <div style="background: rgba(255, 255, 255, 0.05); border-radius: 8px; padding: 15px; margin-top: 10px;">
+        <p style="color: #9ca3af; margin: 0; line-height: 1.6; font-size: 14px; white-space: pre-wrap;">${description}</p>
+      </div>
+      
+      ${website ? `
+      <p style="color: #9ca3af; margin: 15px 0 0;">
+        <strong style="color: #e5e7eb;">Website:</strong> <a href="${website}" style="color: #22c55e;">${website}</a>
+      </p>
+      ` : ""}
+    </div>
+    
+    <!-- Questions -->
+    <p style="color: #9ca3af; font-size: 14px; margin-bottom: 30px;">
+      Questions? Just reply to this email or <a href="https://zizi.so/partner/book" style="color: #22c55e;">book a quick call</a>.
+    </p>
+    
+    <p style="color: #e5e7eb; margin-bottom: 30px;">
+      Best,<br>The ZiziCo Team
+    </p>
+    
+    <!-- Footer -->
+    <div style="text-align: center; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
+      <p style="color: #6b7280; font-size: 12px; margin: 0;">
+        Reference ID: ${requestId}
+      </p>
+      <p style="color: #6b7280; font-size: 12px; margin: 10px 0 0;">
+        © ${new Date().getFullYear()} ZiziCo. All rights reserved.
+      </p>
+    </div>
+    
+  </div>
+</body>
+</html>
+      `,
+    });
+
+    console.log("Resend: Partner trial confirmation result:", JSON.stringify(result));
+    
+    if (result.error) {
+      console.error("Resend API error:", result.error);
+      return { success: false, error: result.error.message };
+    }
+
+    return { success: true };
+  } catch (error) {
+    console.error("Error sending partner trial confirmation email:", error);
+    return { success: false, error: String(error) };
+  }
+}
+
+/**
+ * Send admin notification when a new partner trial request is made
+ */
+export async function sendPartnerTrialAdminNotification({
+  to,
+  name,
+  buildType,
+  description,
+  website,
+  requestId,
+}: Omit<PartnerTrialRequestEmailProps, 'stripePaymentLink'>): Promise<{ success: boolean; error?: string }> {
+  try {
+    console.log("Resend: Sending partner trial admin notification to:", ADMIN_EMAIL);
+    const result = await resend.emails.send({
+      from: FROM_EMAIL,
+      to: ADMIN_EMAIL,
+      subject: `🚀 New Partner Trial Request: ${buildType}`,
+      html: `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+</head>
+<body style="margin: 0; padding: 20px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f3f4f6;">
+  <div style="max-width: 600px; margin: 0 auto; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+    
+    <!-- Header -->
+    <div style="background: linear-gradient(135deg, #22c55e, #16a34a); padding: 25px; text-align: center;">
+      <h1 style="color: white; margin: 0; font-size: 24px;">New Trial Build Request! 🚀</h1>
+    </div>
+    
+    <div style="padding: 30px;">
+      
+      <p style="color: #1f2937; font-size: 16px; margin: 0 0 25px;">
+        <strong>Request ID:</strong> ${requestId}
+      </p>
+      
+      <!-- Contact Details -->
+      <h2 style="color: #1f2937; margin: 0 0 15px; font-size: 18px; border-bottom: 2px solid #e5e7eb; padding-bottom: 10px;">
+        👤 Contact Info
+      </h2>
+      
+      <table style="width: 100%; margin-bottom: 25px;">
+        <tr>
+          <td style="color: #6b7280; padding: 8px 0; width: 120px;">Name:</td>
+          <td style="color: #1f2937; font-weight: 600;">${name}</td>
+        </tr>
+        <tr>
+          <td style="color: #6b7280; padding: 8px 0;">Email:</td>
+          <td style="color: #1f2937;"><a href="mailto:${to}" style="color: #22c55e;">${to}</a></td>
+        </tr>
+        ${website ? `
+        <tr>
+          <td style="color: #6b7280; padding: 8px 0;">Website:</td>
+          <td style="color: #1f2937;"><a href="${website}" style="color: #22c55e;">${website}</a></td>
+        </tr>
+        ` : ""}
+      </table>
+      
+      <!-- Request Details -->
+      <h2 style="color: #1f2937; margin: 0 0 15px; font-size: 18px; border-bottom: 2px solid #e5e7eb; padding-bottom: 10px;">
+        📋 Request Details
+      </h2>
+      
+      <p style="color: #6b7280; margin: 0 0 10px;"><strong style="color: #1f2937;">Build Type:</strong> ${buildType}</p>
+      
+      <p style="color: #6b7280; margin: 15px 0 10px;"><strong style="color: #1f2937;">Description:</strong></p>
+      <div style="background: #f9fafb; border-left: 4px solid #22c55e; padding: 15px; margin-bottom: 25px; border-radius: 0 8px 8px 0;">
+        <p style="color: #374151; margin: 0; line-height: 1.6; white-space: pre-wrap;">${description}</p>
+      </div>
+      
+    </div>
+    
+    <!-- Footer -->
+    <div style="background: #f3f4f6; padding: 15px; text-align: center;">
+      <p style="color: #9ca3af; font-size: 12px; margin: 0;">
+        Submitted at: ${new Date().toLocaleString()}
+      </p>
+    </div>
+    
+  </div>
+</body>
+</html>
+      `,
+    });
+
+    console.log("Resend: Partner trial admin notification result:", JSON.stringify(result));
+    
+    if (result.error) {
+      console.error("Resend API error:", result.error);
+      return { success: false, error: result.error.message };
+    }
+
+    return { success: true };
+  } catch (error) {
+    console.error("Error sending partner trial admin notification:", error);
+    return { success: false, error: String(error) };
   }
 }
