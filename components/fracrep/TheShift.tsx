@@ -2,17 +2,14 @@
 
 export default function TheShift() {
   return (
-    <section className="bg-white py-16 md:py-24">
-      <div className="max-w-4xl mx-auto px-6 sm:px-8">
-        <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-10 tracking-tight">
-          The Shift
+    <section className="bg-white border-t border-gray-200 py-20 md:py-28">
+      <div className="max-w-3xl mx-auto px-6 sm:px-10">
+        <p className="text-xs tracking-[0.15em] uppercase text-[#9CA3AF] font-medium mb-4">The Shift</p>
+        <h2 className="font-display text-3xl sm:text-4xl md:text-[2.75rem] font-bold text-[#111827] leading-[1.15] tracking-tight mb-10">
+          The smartest high-ticket sellers aren't just creating content anymore.
         </h2>
-        <div className="space-y-6 text-lg sm:text-xl text-gray-700 leading-relaxed">
-          <p>
-            The smartest high-ticket sellers aren't just creating content
-            anymore.
-          </p>
-          <p className="font-semibold text-gray-900">
+        <div className="space-y-5 text-[#4B5563] text-base sm:text-lg leading-relaxed">
+          <p className="font-semibold text-[#111827] text-xl">
             They're building tools.
           </p>
           <p>
@@ -30,7 +27,7 @@ export default function TheShift() {
             reflects your methodology and converts — used to take a development
             team and months of time.
           </p>
-          <p className="font-semibold text-gray-900">
+          <p className="font-semibold text-[#111827]">
             Not anymore.
           </p>
         </div>
@@ -38,4 +35,3 @@ export default function TheShift() {
     </section>
   );
 }
-

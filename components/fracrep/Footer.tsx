@@ -4,42 +4,49 @@ import Link from "next/link";
 
 export default function Footer() {
   return (
-    <footer className="bg-white border-t border-gray-200 py-12 md:py-16">
-      <div className="max-w-7xl mx-auto px-6 sm:px-8">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="flex items-center gap-3">
-            <div className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-900 text-white text-xl font-bold">
-              Z
-            </div>
-            <span className="text-sm text-gray-600">
-              Lead Gen Tools
-            </span>
+    <footer className="bg-white border-t border-gray-200">
+      <div className="max-w-3xl mx-auto px-6 sm:px-10 py-12">
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
+          {/* Logo + tagline */}
+          <div>
+            <Link href="/" className="flex items-center gap-2.5 mb-2">
+              <div className="w-7 h-7 rounded-md bg-[#2563EB] flex items-center justify-center">
+                <span className="text-white font-bold text-sm leading-none">Z</span>
+              </div>
+              <span className="text-[#111827] font-semibold text-base">ZiziCo</span>
+            </Link>
+            <p className="text-sm text-[#9CA3AF]">
+              Lead gen tools for high-ticket businesses.
+            </p>
           </div>
-          <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-gray-600">
-            <Link href="#how-it-works" className="hover:text-gray-900 transition-colors">
-              How It Works
-            </Link>
-            <Link href="#what-you-could-build" className="hover:text-gray-900 transition-colors">
-              What You Could Build
-            </Link>
-            <Link href="#pricing" className="hover:text-gray-900 transition-colors">
-              Pricing
-            </Link>
-            <Link href="#faq" className="hover:text-gray-900 transition-colors">
-              FAQ
-            </Link>
-            <Link href="/zizi/book" className="hover:text-gray-900 transition-colors">
-              Book a Call
-            </Link>
+
+          {/* Links */}
+          <div className="flex flex-col sm:flex-row gap-6 sm:gap-8">
+            <div>
+              <p className="text-xs uppercase tracking-wider text-[#9CA3AF] font-medium mb-3">Service</p>
+              <div className="space-y-2">
+                <a href="#how-it-works" className="block text-sm text-[#4B5563] hover:text-[#111827] transition-colors">How It Works</a>
+                <a href="#what-you-could-build" className="block text-sm text-[#4B5563] hover:text-[#111827] transition-colors">What You Could Build</a>
+                <a href="#pricing" className="block text-sm text-[#4B5563] hover:text-[#111827] transition-colors">Pricing</a>
+              </div>
+            </div>
+            <div>
+              <p className="text-xs uppercase tracking-wider text-[#9CA3AF] font-medium mb-3">Support</p>
+              <div className="space-y-2">
+                <a href="#faq" className="block text-sm text-[#4B5563] hover:text-[#111827] transition-colors">FAQ</a>
+                <Link href="/zizi/book" className="block text-sm text-[#4B5563] hover:text-[#111827] transition-colors">Book a Call</Link>
+              </div>
+            </div>
           </div>
         </div>
-        <div className="mt-10 pt-8 border-t border-gray-200 text-center">
-          <p className="text-sm text-gray-500">
-            Built for high-ticket coaches, consultants, and service businesses.
+
+        {/* Bottom */}
+        <div className="mt-10 pt-6 border-t border-gray-200">
+          <p className="text-xs text-[#9CA3AF]">
+            © {new Date().getFullYear()} ZiziCo. Built for high-ticket coaches, consultants, and service businesses.
           </p>
         </div>
       </div>
     </footer>
   );
 }
-
