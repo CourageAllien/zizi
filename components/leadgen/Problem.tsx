@@ -4,7 +4,7 @@ import AnimateOnScroll from "../partner/AnimateOnScroll";
 
 export default function LeadGenProblem() {
   return (
-    <section id="problem" className="py-20 md:py-32 bg-[#fafafa] text-black">
+    <section id="problem" className="py-20 md:py-32 bg-white text-black">
       <div className="max-w-4xl mx-auto px-6">
         <AnimateOnScroll>
           <h2 className="text-4xl md:text-5xl font-bold mb-6 text-center">

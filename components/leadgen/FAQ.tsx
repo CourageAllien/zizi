@@ -39,10 +39,10 @@ export default function LeadGenFAQ() {
   };
 
   return (
-    <section id="faq" className="py-20 md:py-32 bg-[var(--color-bg-secondary)]">
+    <section id="faq" className="py-20 md:py-32 bg-[#f5f5f0] text-black">
       <div className="max-w-4xl mx-auto px-6">
         <AnimateOnScroll>
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-12 text-center">
+          <h2 className="text-4xl md:text-5xl font-bold text-black mb-12 text-center">
             Common Questions
           </h2>
         </AnimateOnScroll>
@@ -56,7 +56,7 @@ export default function LeadGenFAQ() {
               >
                 <button
                   onClick={() => toggle(index)}
-                  className="w-full px-6 py-4 text-left flex items-center justify-between text-white hover:text-[var(--color-primary)] transition-colors"
+                  className="w-full px-6 py-4 text-left flex items-center justify-between text-black hover:text-gray-600 transition-colors"
                 >
                   <span className="font-medium">{faq.question}</span>
                   <ChevronDown
@@ -66,7 +66,7 @@ export default function LeadGenFAQ() {
                   />
                 </button>
                 {openIndex === index && (
-                  <div className="px-6 pb-4 text-[var(--color-text-secondary)] leading-relaxed">
+                  <div className="px-6 pb-4 text-gray-700 leading-relaxed">
                     {faq.answer}
                   </div>
                 )}

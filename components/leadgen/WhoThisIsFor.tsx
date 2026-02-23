@@ -5,7 +5,7 @@ import { Check, X } from "lucide-react";
 
 export default function WhoThisIsFor() {
   return (
-    <section id="who-this-is-for" className="py-20 md:py-32 bg-[#fafafa] text-black">
+    <section id="who-this-is-for" className="py-20 md:py-32 bg-white text-black">
       <div className="max-w-4xl mx-auto px-6">
         <AnimateOnScroll>
           <h2 className="text-4xl md:text-5xl font-bold mb-12 text-center">

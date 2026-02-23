@@ -10,6 +10,7 @@ import WhatYouCouldBuild from "@/components/leadgen/WhatYouCouldBuild";
 import LeadGenPricing from "@/components/leadgen/Pricing";
 import LeadGenFAQ from "@/components/leadgen/FAQ";
 import LeadGenFinalCTA from "@/components/leadgen/FinalCTA";
+import WhatSiriShouldBe from "@/components/leadgen/WhatSiriShouldBe";
 import LeadGenFooter from "@/components/leadgen/Footer";
 
 export default function Home() {
@@ -17,8 +18,9 @@ export default function Home() {
     <>
       <GradientBanner />
       <LeadGenHeader />
-      <main className="bg-[#fafafa]">
+      <main className="bg-[#f5f5f0]">
         <LeadGenHero />
+        <WhatSiriShouldBe />
         <LeadGenProblem />
         <TheShift />
         <WhatWeDo />

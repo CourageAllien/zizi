@@ -5,7 +5,7 @@ import { Check } from "lucide-react";
 
 export default function WhatWeDo() {
   return (
-    <section id="what-we-do" className="py-20 md:py-32 bg-[#fafafa] text-black">
+    <section id="what-we-do" className="py-20 md:py-32 bg-white text-black">
       <div className="max-w-4xl mx-auto px-6">
         <AnimateOnScroll>
           <h2 className="text-4xl md:text-5xl font-bold mb-6 text-center">

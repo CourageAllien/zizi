@@ -6,7 +6,7 @@ import Link from "next/link";
 
 export default function LeadGenPricing() {
   return (
-    <section id="pricing" className="py-20 md:py-32 bg-[#fafafa] text-black">
+    <section id="pricing" className="py-20 md:py-32 bg-white text-black">
       <div className="max-w-4xl mx-auto px-6">
         <AnimateOnScroll>
           <h2 className="text-4xl md:text-5xl font-bold mb-6 text-center">
