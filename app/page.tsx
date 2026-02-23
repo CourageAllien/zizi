@@ -1,26 +1,22 @@
-import GradientBanner from "@/components/agentone/GradientBanner";
-import LeadGenHeader from "@/components/leadgen/Header";
-import LeadGenHero from "@/components/leadgen/Hero";
-import LeadGenProblem from "@/components/leadgen/Problem";
-import TheShift from "@/components/leadgen/TheShift";
-import WhatWeDo from "@/components/leadgen/WhatWeDo";
-import LeadGenHowItWorks from "@/components/leadgen/HowItWorks";
-import WhoThisIsFor from "@/components/leadgen/WhoThisIsFor";
-import WhatYouCouldBuild from "@/components/leadgen/WhatYouCouldBuild";
-import LeadGenPricing from "@/components/leadgen/Pricing";
-import LeadGenFAQ from "@/components/leadgen/FAQ";
-import LeadGenFinalCTA from "@/components/leadgen/FinalCTA";
-import WhatSiriShouldBe from "@/components/leadgen/WhatSiriShouldBe";
-import LeadGenFooter from "@/components/leadgen/Footer";
+import OrrenHeader from "@/components/orren/Header";
+import OrrenHero from "@/components/orren/Hero";
+import LeadGenProblem from "@/components/orren/Problem";
+import TheShift from "@/components/orren/TheShift";
+import WhatWeDo from "@/components/orren/WhatWeDo";
+import LeadGenHowItWorks from "@/components/orren/HowItWorks";
+import WhoThisIsFor from "@/components/orren/WhoThisIsFor";
+import WhatYouCouldBuild from "@/components/orren/WhatYouCouldBuild";
+import LeadGenPricing from "@/components/orren/Pricing";
+import LeadGenFAQ from "@/components/orren/FAQ";
+import LeadGenFinalCTA from "@/components/orren/FinalCTA";
+import OrrenFooter from "@/components/orren/Footer";
 
 export default function Home() {
   return (
     <>
-      <GradientBanner />
-      <LeadGenHeader />
-      <main className="bg-[#f5f5f0]">
-        <LeadGenHero />
-        <WhatSiriShouldBe />
+      <OrrenHeader />
+      <main className="bg-white">
+        <OrrenHero />
         <LeadGenProblem />
         <TheShift />
         <WhatWeDo />
@@ -31,7 +27,7 @@ export default function Home() {
         <LeadGenFAQ />
         <LeadGenFinalCTA />
       </main>
-      <LeadGenFooter />
+      <OrrenFooter />
     </>
   );
 }
