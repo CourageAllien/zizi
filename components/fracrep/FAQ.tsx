@@ -43,31 +43,31 @@ export default function FAQ() {
   };
 
   return (
-    <section className="bg-white py-20 md:py-32">
-      <div className="max-w-4xl mx-auto px-6">
-        <h2 className="text-3xl md:text-4xl font-bold text-black mb-12">
+    <section className="bg-white py-16 md:py-24">
+      <div className="max-w-4xl mx-auto px-6 sm:px-8">
+        <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-12 tracking-tight">
           Common Questions
         </h2>
-        <div className="space-y-4">
+        <div className="space-y-1">
           {faqs.map((faq, index) => (
             <div
               key={index}
-              className="border-b border-gray-200 pb-4 last:border-b-0"
+              className="border-b border-gray-200 last:border-b-0"
             >
               <button
                 onClick={() => toggleFAQ(index)}
-                className="w-full flex items-center justify-between text-left py-4"
+                className="w-full flex items-center justify-between text-left py-5 hover:bg-gray-50 transition-colors rounded-lg px-2 -mx-2"
               >
-                <span className="text-lg font-medium text-black pr-8">
+                <span className="text-lg sm:text-xl font-medium text-gray-900 pr-8">
                   {faq.question}
                 </span>
-                <span className="text-2xl text-gray-400 flex-shrink-0">
+                <span className="text-2xl text-gray-400 flex-shrink-0 font-light">
                   {openIndex === index ? "−" : "+"}
                 </span>
               </button>
               {openIndex === index && (
-                <div className="pb-4">
-                  <p className="text-lg text-gray-700 leading-relaxed">
+                <div className="pb-5 px-2">
+                  <p className="text-lg sm:text-xl text-gray-700 leading-relaxed">
                     {faq.answer}
                   </p>
                 </div>

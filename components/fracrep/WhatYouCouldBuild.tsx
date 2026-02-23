@@ -2,12 +2,12 @@
 
 export default function WhatYouCouldBuild() {
   return (
-    <section className="bg-white py-20 md:py-32">
-      <div className="max-w-4xl mx-auto px-6">
-        <h2 className="text-3xl md:text-4xl font-bold text-black mb-8">
+    <section className="bg-white py-16 md:py-24">
+      <div className="max-w-4xl mx-auto px-6 sm:px-8">
+        <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-10 tracking-tight">
           What You Could Build
         </h2>
-        <div className="space-y-6 text-lg text-gray-700 leading-relaxed">
+        <div className="space-y-6 text-lg sm:text-xl text-gray-700 leading-relaxed">
           <p>
             A leadership coach builds a "Leadership Gap Assessment" — Directors
             and VPs find out where their blind spots are. They book a call to
@@ -52,7 +52,7 @@ export default function WhatYouCouldBuild() {
             of drop-off points, friction areas, and optimization opportunities
             with specific recommendations.
           </p>
-          <p className="font-medium text-black mt-6">
+          <p className="font-semibold text-gray-900 mt-8 text-xl">
             The tool is the handshake. Your offer is the relationship.
           </p>
         </div>
