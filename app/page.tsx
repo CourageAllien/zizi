@@ -1,33 +1,19 @@
-import Header from "@/components/Header";
-import Hero from "@/components/Hero";
-import Problem from "@/components/Problem";
-import Solution from "@/components/Solution";
-import WhatWeBuild from "@/components/WhatWeBuild";
-import Differentiation from "@/components/Differentiation";
-import Pricing from "@/components/Pricing";
-import HowItWorks from "@/components/HowItWorks";
-import WhoItsFor from "@/components/WhoItsFor";
-import FAQ from "@/components/FAQ";
-import CTA from "@/components/CTA";
-import Footer from "@/components/Footer";
+import GradientBanner from "@/components/agentone/GradientBanner";
+import AgentOneHeader from "@/components/agentone/Header";
+import AgentOneHero from "@/components/agentone/Hero";
+import WhatSiriShouldBe from "@/components/agentone/WhatSiriShouldBe";
+import IntegrationDiagram from "@/components/agentone/IntegrationDiagram";
 
 export default function Home() {
   return (
     <>
-      <Header />
-      <main>
-        <Hero />
-        <Problem />
-        <Solution />
-        <WhatWeBuild />
-        <Differentiation />
-        <HowItWorks />
-        <Pricing />
-        <WhoItsFor />
-        <FAQ />
-        <CTA />
+      <GradientBanner />
+      <AgentOneHeader />
+      <main className="bg-[#fafafa]">
+        <AgentOneHero />
+        <WhatSiriShouldBe />
+        <IntegrationDiagram />
       </main>
-      <Footer />
     </>
   );
 }
