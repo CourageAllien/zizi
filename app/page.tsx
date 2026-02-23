@@ -1,33 +1,41 @@
-import OrrenHeader from "@/components/orren/Header";
-import OrrenHero from "@/components/orren/Hero";
-import LeadGenProblem from "@/components/orren/Problem";
-import TheShift from "@/components/orren/TheShift";
-import WhatWeDo from "@/components/orren/WhatWeDo";
-import LeadGenHowItWorks from "@/components/orren/HowItWorks";
-import WhoThisIsFor from "@/components/orren/WhoThisIsFor";
-import WhatYouCouldBuild from "@/components/orren/WhatYouCouldBuild";
-import LeadGenPricing from "@/components/orren/Pricing";
-import LeadGenFAQ from "@/components/orren/FAQ";
-import LeadGenFinalCTA from "@/components/orren/FinalCTA";
-import OrrenFooter from "@/components/orren/Footer";
+import Header from "@/components/fracrep/Header";
+import Hero from "@/components/fracrep/Hero";
+import Problem from "@/components/fracrep/Problem";
+import TheShift from "@/components/fracrep/TheShift";
+import WhatWeDo from "@/components/fracrep/WhatWeDo";
+import HowItWorks from "@/components/fracrep/HowItWorks";
+import WhoThisIsFor from "@/components/fracrep/WhoThisIsFor";
+import WhatYouCouldBuild from "@/components/fracrep/WhatYouCouldBuild";
+import Pricing from "@/components/fracrep/Pricing";
+import FAQ from "@/components/fracrep/FAQ";
+import FinalCTA from "@/components/fracrep/FinalCTA";
+import Footer from "@/components/fracrep/Footer";
 
 export default function Home() {
   return (
-    <>
-      <OrrenHeader />
-      <main className="bg-white">
-        <OrrenHero />
-        <LeadGenProblem />
-        <TheShift />
-        <WhatWeDo />
-        <LeadGenHowItWorks />
-        <WhoThisIsFor />
+    <main className="min-h-screen bg-white">
+      <Header />
+      <Hero />
+      <div id="problem">
+        <Problem />
+      </div>
+      <TheShift />
+      <WhatWeDo />
+      <div id="how-it-works">
+        <HowItWorks />
+      </div>
+      <WhoThisIsFor />
+      <div id="what-you-could-build">
         <WhatYouCouldBuild />
-        <LeadGenPricing />
-        <LeadGenFAQ />
-        <LeadGenFinalCTA />
-      </main>
-      <OrrenFooter />
-    </>
+      </div>
+      <div id="pricing">
+        <Pricing />
+      </div>
+      <div id="faq">
+        <FAQ />
+      </div>
+      <FinalCTA />
+      <Footer />
+    </main>
   );
 }

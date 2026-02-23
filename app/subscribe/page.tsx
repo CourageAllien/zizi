@@ -1,84 +1,111 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useState } from "react";
 import Link from "next/link";
-import { Check } from "lucide-react";
+import { ArrowLeft, Check } from "lucide-react";
 
 export default function SubscribePage() {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSubscribe = async () => {
+    setIsLoading(true);
+    // In production, this would redirect to Stripe Checkout
+    // For now, redirect to a Stripe payment link
+    window.location.href = "https://buy.stripe.com/your-stripe-link"; // Replace with actual Stripe link
+  };
+
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white flex items-center justify-center px-4">
-      <div className="fixed inset-0 bg-gradient-to-br from-[var(--color-primary)]/30 via-[#0a0a0a] to-[var(--color-accent)]/20 pointer-events-none" />
-      <motion.div
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        className="relative z-10 max-w-2xl w-full"
-      >
-        <div className="bg-[var(--color-bg-secondary)] border border-[var(--color-border)] rounded-3xl p-8 md:p-12">
-          <div className="text-center mb-8">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              Start Building Your Lead Gen Tools
-            </h1>
-            <p className="text-xl text-[var(--color-text-secondary)]">
-              $549/month • Unlimited builds • Cancel anytime
-            </p>
-          </div>
+    <main className="min-h-screen bg-white">
+      <div className="max-w-4xl mx-auto px-6 py-12">
+        {/* Back Link */}
+        <Link
+          href="/"
+          className="inline-flex items-center gap-2 text-gray-600 hover:text-black transition-colors mb-8"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          Back to home
+        </Link>
 
-          <div className="bg-[var(--color-bg-primary)] border border-[var(--color-primary)]/30 rounded-2xl p-6 mb-8">
-            <div className="text-center mb-6">
-              <div className="text-6xl font-bold text-[var(--color-primary)] mb-2">
-                $549
-              </div>
-              <div className="text-lg text-[var(--color-text-secondary)] mb-6">
-                / month
-              </div>
+        {/* Header */}
+        <div className="text-center mb-12">
+          <h1 className="text-4xl md:text-5xl font-bold text-black mb-4">
+            Start Building Your First Tool
+          </h1>
+          <p className="text-lg text-gray-600">
+            $549/month • Cancel anytime • No contracts
+          </p>
+        </div>
+
+        {/* Pricing Card */}
+        <div className="bg-gray-50 border border-gray-200 rounded-lg p-8 md:p-12 mb-8 max-w-2xl mx-auto">
+          <div className="text-5xl font-bold text-black mb-2">$549</div>
+          <div className="text-lg text-gray-600 mb-8">/ month</div>
+
+          <ul className="space-y-4 mb-8 text-lg text-gray-700">
+            <li className="flex items-start">
+              <span className="mr-3">→</span>
+              <span>Unlimited builds (one active request at a time)</span>
+            </li>
+            <li className="flex items-start">
+              <span className="mr-3">→</span>
+              <span>Strategy included</span>
+            </li>
+            <li className="flex items-start">
+              <span className="mr-3">→</span>
+              <span>Full design and development</span>
+            </li>
+            <li className="flex items-start">
+              <span className="mr-3">→</span>
+              <span>Unlimited revisions per build</span>
+            </li>
+            <li className="flex items-start">
+              <span className="mr-3">→</span>
+              <span>Cancel anytime</span>
+            </li>
+          </ul>
+
+          {/* Subscribe Button */}
+          <button
+            onClick={handleSubscribe}
+            disabled={isLoading}
+            className="w-full bg-black text-white px-8 py-4 rounded-lg text-base font-medium hover:bg-gray-800 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+          >
+            {isLoading ? "Redirecting to checkout..." : "Subscribe Now"}
+          </button>
+
+          {/* Trust Elements */}
+          <div className="mt-6 pt-6 border-t border-gray-200">
+            <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-gray-600">
+              <span className="flex items-center gap-1">
+                <Check className="w-4 h-4 text-black" />
+                Secure payment via Stripe
+              </span>
+              <span className="flex items-center gap-1">
+                <Check className="w-4 h-4 text-black" />
+                Cancel anytime
+              </span>
+              <span className="flex items-center gap-1">
+                <Check className="w-4 h-4 text-black" />
+                No long-term contracts
+              </span>
             </div>
-
-            <ul className="space-y-4 mb-8">
-              {[
-                "Unlimited builds (one active request at a time)",
-                "Strategy included",
-                "Full design and development",
-                "Unlimited revisions per build",
-                "Cancel anytime",
-              ].map((item, index) => (
-                <li key={index} className="flex items-start gap-3">
-                  <Check className="w-6 h-6 text-[var(--color-primary)] flex-shrink-0 mt-0.5" />
-                  <span className="text-[var(--color-text-secondary)]">{item}</span>
-                </li>
-              ))}
-            </ul>
-
-            <div className="text-center">
-              <p className="text-sm text-[var(--color-text-muted)] mb-6">
-                No contracts. No hidden fees. No per-project quotes.
-                <br />
-                Just a simple monthly partnership that pays for itself the first time it books you a call.
-              </p>
-              <a
-                href="https://buy.stripe.com/your-link-here"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-block w-full py-4 bg-[var(--color-primary)] text-white rounded-xl font-semibold hover:opacity-90 transition-opacity text-center"
-              >
-                Subscribe for $549/month
-              </a>
-              <p className="text-xs text-[var(--color-text-muted)] mt-4">
-                You&apos;ll be redirected to Stripe to complete your subscription
-              </p>
-            </div>
-          </div>
-
-          <div className="text-center">
-            <Link
-              href="/book"
-              className="text-[var(--color-primary)] hover:text-[var(--color-primary-light)] transition-colors"
-            >
-              Want to book a strategy call first? →
-            </Link>
           </div>
         </div>
-      </motion.div>
-    </div>
+
+        {/* Alternative */}
+        <div className="text-center">
+          <p className="text-gray-600 text-sm mb-3">
+            Not ready to commit? Try us first.
+          </p>
+          <Link
+            href="/zizi/book"
+            className="text-black font-medium hover:underline"
+          >
+            Book a Strategy Call First →
+          </Link>
+        </div>
+      </div>
+    </main>
   );
 }
 
