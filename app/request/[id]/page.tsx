@@ -518,3 +518,4 @@ export default function RequestDetailPage({ params }: { params: Promise<{ id: st
     </div>
   );
 }
+

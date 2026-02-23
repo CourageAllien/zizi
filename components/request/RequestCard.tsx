@@ -160,3 +160,4 @@ export default function RequestCard({ request, compact = false }: RequestCardPro
     </Link>
   );
 }
+

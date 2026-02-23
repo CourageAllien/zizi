@@ -225,3 +225,4 @@ export async function getBookingsNeedingReminders(): Promise<{
 
   return { dayBefore, twoHours, twentyMins };
 }
+

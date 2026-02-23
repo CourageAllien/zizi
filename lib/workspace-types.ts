@@ -208,3 +208,4 @@ export function generateSecureAccessCode(companyName?: string): string {
   
   return `${prefix}${random}-${suffix}`;
 }
+

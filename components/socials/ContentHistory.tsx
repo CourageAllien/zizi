@@ -187,3 +187,4 @@ export default function ContentHistory({ onSelect, onClear }: ContentHistoryProp
     </div>
   );
 }
+

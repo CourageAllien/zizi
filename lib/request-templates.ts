@@ -256,3 +256,4 @@ export function getTemplateById(id: string): RequestTemplate | undefined {
 export function getTemplateByRequestType(requestType: string): RequestTemplate | undefined {
   return requestTemplates.find(t => t.defaultValues.requestType === requestType);
 }
+

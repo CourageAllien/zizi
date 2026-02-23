@@ -13,3 +13,4 @@ export default function SalesBookLayout({
 }) {
   return <>{children}</>;
 }
+

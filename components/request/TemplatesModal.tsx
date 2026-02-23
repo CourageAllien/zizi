@@ -152,3 +152,4 @@ export default function TemplatesModal({ isOpen, onClose, onSelectTemplate }: Te
     </AnimatePresence>
   );
 }
+

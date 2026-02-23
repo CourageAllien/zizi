@@ -178,3 +178,4 @@ export default function PromptTemplates({ onSelect }: PromptTemplatesProps) {
     </div>
   );
 }
+

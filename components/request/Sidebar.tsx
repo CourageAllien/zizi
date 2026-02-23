@@ -249,3 +249,4 @@ export default function Sidebar({ userEmail = 'demo@example.com', planName = 'Gr
     </>
   );
 }
+

@@ -218,3 +218,4 @@ Now write the ${platformConfig.name} post. Output ONLY the post content, nothing
     );
   }
 }
+

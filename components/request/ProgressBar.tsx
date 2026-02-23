@@ -118,3 +118,4 @@ export default function ProgressBar({ steps, currentStep, completedSteps }: Prog
     </div>
   );
 }
+

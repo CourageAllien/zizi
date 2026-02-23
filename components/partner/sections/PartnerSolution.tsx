@@ -82,3 +82,4 @@ export default function PartnerSolution() {
     </section>
   );
 }
+

@@ -244,3 +244,4 @@ export default function Step3Branding({ form }: Step3Props) {
     </div>
   );
 }
+
