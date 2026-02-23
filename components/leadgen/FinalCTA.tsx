@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { AnimateOnScroll } from "../partner/AnimateOnScroll";
+import AnimateOnScroll from "../partner/AnimateOnScroll";
 import Link from "next/link";
 
 export default function LeadGenFinalCTA() {

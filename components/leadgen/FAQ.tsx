@@ -1,13 +1,8 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { AnimateOnScroll } from "../partner/AnimateOnScroll";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+import { useState } from "react";
+import AnimateOnScroll from "../partner/AnimateOnScroll";
+import { ChevronDown } from "lucide-react";
 
 const faqs = [
   {
@@ -37,6 +32,12 @@ const faqs = [
 ];
 
 export default function LeadGenFAQ() {
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+  const toggle = (index: number) => {
+    setOpenIndex(openIndex === index ? null : index);
+  };
+
   return (
     <section id="faq" className="py-20 md:py-32 bg-[var(--color-bg-secondary)]">
       <div className="max-w-4xl mx-auto px-6">
@@ -47,22 +48,31 @@ export default function LeadGenFAQ() {
         </AnimateOnScroll>
 
         <AnimateOnScroll delay={0.1}>
-          <Accordion type="single" collapsible className="w-full">
+          <div className="space-y-4">
             {faqs.map((faq, index) => (
-              <AccordionItem
+              <div
                 key={index}
-                value={`item-${index}`}
-                className="border-[var(--color-border)]"
+                className="border border-[var(--color-border)] rounded-lg overflow-hidden"
               >
-                <AccordionTrigger className="text-left text-white hover:text-[var(--color-primary)]">
-                  {faq.question}
-                </AccordionTrigger>
-                <AccordionContent className="text-[var(--color-text-secondary)] leading-relaxed">
-                  {faq.answer}
-                </AccordionContent>
-              </AccordionItem>
+                <button
+                  onClick={() => toggle(index)}
+                  className="w-full px-6 py-4 text-left flex items-center justify-between text-white hover:text-[var(--color-primary)] transition-colors"
+                >
+                  <span className="font-medium">{faq.question}</span>
+                  <ChevronDown
+                    className={`w-5 h-5 transition-transform ${
+                      openIndex === index ? "rotate-180" : ""
+                    }`}
+                  />
+                </button>
+                {openIndex === index && (
+                  <div className="px-6 pb-4 text-[var(--color-text-secondary)] leading-relaxed">
+                    {faq.answer}
+                  </div>
+                )}
+              </div>
             ))}
-          </Accordion>
+          </div>
         </AnimateOnScroll>
       </div>
     </section>

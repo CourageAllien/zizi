@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { AnimateOnScroll } from "../partner/AnimateOnScroll";
+import AnimateOnScroll from "../partner/AnimateOnScroll";
 import { Check, X } from "lucide-react";
 
 export default function WhoThisIsFor() {
