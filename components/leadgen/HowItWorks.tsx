@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import AnimateOnScroll from "../partner/AnimateOnScroll";
 import { ArrowRight } from "lucide-react";
 
@@ -29,10 +28,10 @@ const steps = [
 
 export default function LeadGenHowItWorks() {
   return (
-    <section id="how-it-works" className="py-20 md:py-32 bg-[var(--color-bg-secondary)]">
+    <section id="how-it-works" className="py-20 md:py-32 bg-white text-black">
       <div className="max-w-6xl mx-auto px-6">
         <AnimateOnScroll>
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6 text-center">
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-center">
             How It Works
           </h2>
         </AnimateOnScroll>
@@ -42,23 +41,18 @@ export default function LeadGenHowItWorks() {
             <AnimateOnScroll key={index} delay={index * 0.1}>
               <div className="flex flex-col md:flex-row gap-6 items-start">
                 <div className="flex-shrink-0">
-                  <div className="w-16 h-16 rounded-full bg-[var(--color-primary)]/20 border border-[var(--color-primary)]/50 flex items-center justify-center">
-                    <span className="text-2xl font-bold text-[var(--color-primary)]">{step.number}</span>
+                  <div className="w-16 h-16 rounded-full bg-black text-white flex items-center justify-center">
+                    <span className="text-2xl font-bold">{step.number}</span>
                   </div>
                 </div>
                 <div className="flex-1">
-                  <h3 className="text-2xl font-bold text-white mb-3">
+                  <h3 className="text-2xl font-bold text-black mb-3">
                     STEP {step.number} — {step.title}
                   </h3>
-                  <p className="text-lg text-[var(--color-text-secondary)] leading-relaxed">
+                  <p className="text-lg text-gray-700 leading-relaxed">
                     {step.description}
                   </p>
                 </div>
-                {index < steps.length - 1 && (
-                  <div className="hidden md:block absolute left-1/2 transform -translate-x-1/2 mt-20">
-                    <ArrowRight className="w-6 h-6 text-[var(--color-primary)] rotate-90" />
-                  </div>
-                )}
               </div>
             </AnimateOnScroll>
           ))}
@@ -67,4 +61,3 @@ export default function LeadGenHowItWorks() {
     </section>
   );
 }
-

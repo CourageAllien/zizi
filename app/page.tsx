@@ -1,19 +1,35 @@
 import GradientBanner from "@/components/agentone/GradientBanner";
-import AgentOneHeader from "@/components/agentone/Header";
-import AgentOneHero from "@/components/agentone/Hero";
-import WhatSiriShouldBe from "@/components/agentone/WhatSiriShouldBe";
-import IntegrationDiagram from "@/components/agentone/IntegrationDiagram";
+import LeadGenHeader from "@/components/leadgen/Header";
+import LeadGenHero from "@/components/leadgen/Hero";
+import LeadGenProblem from "@/components/leadgen/Problem";
+import TheShift from "@/components/leadgen/TheShift";
+import WhatWeDo from "@/components/leadgen/WhatWeDo";
+import LeadGenHowItWorks from "@/components/leadgen/HowItWorks";
+import WhoThisIsFor from "@/components/leadgen/WhoThisIsFor";
+import WhatYouCouldBuild from "@/components/leadgen/WhatYouCouldBuild";
+import LeadGenPricing from "@/components/leadgen/Pricing";
+import LeadGenFAQ from "@/components/leadgen/FAQ";
+import LeadGenFinalCTA from "@/components/leadgen/FinalCTA";
+import LeadGenFooter from "@/components/leadgen/Footer";
 
 export default function Home() {
   return (
     <>
       <GradientBanner />
-      <AgentOneHeader />
+      <LeadGenHeader />
       <main className="bg-[#fafafa]">
-        <AgentOneHero />
-        <WhatSiriShouldBe />
-        <IntegrationDiagram />
+        <LeadGenHero />
+        <LeadGenProblem />
+        <TheShift />
+        <WhatWeDo />
+        <LeadGenHowItWorks />
+        <WhoThisIsFor />
+        <WhatYouCouldBuild />
+        <LeadGenPricing />
+        <LeadGenFAQ />
+        <LeadGenFinalCTA />
       </main>
+      <LeadGenFooter />
     </>
   );
 }

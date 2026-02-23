@@ -1,8 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
 import AnimateOnScroll from "../partner/AnimateOnScroll";
-import { Calculator, TrendingUp, FileText, Users } from "lucide-react";
+import { Calculator, TrendingUp, FileText } from "lucide-react";
 
 const examples = [
   {
@@ -24,10 +23,10 @@ const examples = [
 
 export default function WhatYouCouldBuild() {
   return (
-    <section id="what-you-could-build" className="py-20 md:py-32 bg-[var(--color-bg-secondary)]">
+    <section id="what-you-could-build" className="py-20 md:py-32 bg-white text-black">
       <div className="max-w-6xl mx-auto px-6">
         <AnimateOnScroll>
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6 text-center">
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-center">
             What You Could Build
           </h2>
         </AnimateOnScroll>
@@ -35,12 +34,12 @@ export default function WhatYouCouldBuild() {
         <div className="grid md:grid-cols-3 gap-8 mt-16">
           {examples.map((example, index) => (
             <AnimateOnScroll key={index} delay={index * 0.1}>
-              <div className="bg-[var(--color-bg-primary)] border border-[var(--color-border)] rounded-2xl p-8 hover:border-[var(--color-primary)]/50 transition-colors">
-                <example.icon className="w-12 h-12 text-[var(--color-primary)] mb-4" />
-                <h3 className="text-xl font-bold text-white mb-3">
+              <div className="bg-[#fafafa] border border-gray-300 rounded-2xl p-8 hover:border-black transition-colors">
+                <example.icon className="w-12 h-12 text-black mb-4" />
+                <h3 className="text-xl font-bold text-black mb-3">
                   {example.title}
                 </h3>
-                <p className="text-[var(--color-text-secondary)] leading-relaxed">
+                <p className="text-gray-700 leading-relaxed">
                   {example.description}
                 </p>
               </div>
@@ -49,7 +48,7 @@ export default function WhatYouCouldBuild() {
         </div>
 
         <AnimateOnScroll delay={0.3}>
-          <p className="text-center text-xl font-semibold text-white mt-12">
+          <p className="text-center text-xl font-semibold text-black mt-12">
             The tool is the handshake. Your offer is the relationship.
           </p>
         </AnimateOnScroll>
@@ -57,4 +56,3 @@ export default function WhatYouCouldBuild() {
     </section>
   );
 }
-

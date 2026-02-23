@@ -7,7 +7,7 @@ export default function LeadGenFooter() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-[var(--color-bg-primary)] border-t border-[var(--color-border)]">
+    <footer className="bg-[#1a1a1a] text-white border-t border-gray-800">
       <div className="max-w-6xl mx-auto px-6 py-16">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -17,10 +17,13 @@ export default function LeadGenFooter() {
           className="grid md:grid-cols-4 gap-12"
         >
           <div className="md:col-span-2">
-            <Link href="/" className="text-2xl font-bold text-white">
+            <Link href="/" className="text-2xl font-bold text-white flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
+                <span className="text-white font-bold text-lg">Z</span>
+              </div>
               ZiziCo
             </Link>
-            <p className="text-[var(--color-text-secondary)] mt-4 max-w-md leading-relaxed">
+            <p className="text-gray-400 mt-4 max-w-md leading-relaxed">
               We build done-for-you lead gen tools that attract your ideal clients, prove your expertise, and sell your high-ticket offer — before you ever get on a call.
             </p>
           </div>
@@ -31,7 +34,7 @@ export default function LeadGenFooter() {
               <li>
                 <a
                   href="#how-it-works"
-                  className="text-[var(--color-text-secondary)] hover:text-white transition-colors"
+                  className="text-gray-400 hover:text-white transition-colors"
                 >
                   How It Works
                 </a>
@@ -39,7 +42,7 @@ export default function LeadGenFooter() {
               <li>
                 <a
                   href="#what-you-could-build"
-                  className="text-[var(--color-text-secondary)] hover:text-white transition-colors"
+                  className="text-gray-400 hover:text-white transition-colors"
                 >
                   What You Could Build
                 </a>
@@ -47,7 +50,7 @@ export default function LeadGenFooter() {
               <li>
                 <a
                   href="#pricing"
-                  className="text-[var(--color-text-secondary)] hover:text-white transition-colors"
+                  className="text-gray-400 hover:text-white transition-colors"
                 >
                   Pricing
                 </a>
@@ -55,7 +58,7 @@ export default function LeadGenFooter() {
               <li>
                 <a
                   href="#faq"
-                  className="text-[var(--color-text-secondary)] hover:text-white transition-colors"
+                  className="text-gray-400 hover:text-white transition-colors"
                 >
                   FAQ
                 </a>
@@ -69,7 +72,7 @@ export default function LeadGenFooter() {
               <li>
                 <a
                   href="mailto:hello@zizi.so"
-                  className="text-[var(--color-text-secondary)] hover:text-white transition-colors"
+                  className="text-gray-400 hover:text-white transition-colors"
                 >
                   hello@zizi.so
                 </a>
@@ -77,7 +80,7 @@ export default function LeadGenFooter() {
               <li>
                 <Link
                   href="/book"
-                  className="text-[var(--color-text-secondary)] hover:text-white transition-colors"
+                  className="text-gray-400 hover:text-white transition-colors"
                 >
                   Book a Strategy Call
                 </Link>
@@ -86,20 +89,20 @@ export default function LeadGenFooter() {
           </div>
         </motion.div>
 
-        <div className="mt-16 pt-8 border-t border-[var(--color-border)] flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-sm text-[var(--color-text-muted)]">
+        <div className="mt-16 pt-8 border-t border-gray-800 flex flex-col md:flex-row items-center justify-between gap-4">
+          <p className="text-sm text-gray-500">
             © {currentYear} ZiziCo. All rights reserved.
           </p>
           <div className="flex items-center gap-6">
             <a
               href="#"
-              className="text-sm text-[var(--color-text-muted)] hover:text-white transition-colors"
+              className="text-sm text-gray-500 hover:text-white transition-colors"
             >
               Privacy Policy
             </a>
             <a
               href="#"
-              className="text-sm text-[var(--color-text-muted)] hover:text-white transition-colors"
+              className="text-sm text-gray-500 hover:text-white transition-colors"
             >
               Terms of Service
             </a>
@@ -109,4 +112,3 @@ export default function LeadGenFooter() {
     </footer>
   );
 }
-

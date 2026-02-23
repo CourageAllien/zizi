@@ -1,21 +1,20 @@
 "use client";
 
-import { motion } from "framer-motion";
 import AnimateOnScroll from "../partner/AnimateOnScroll";
 import { Check, X } from "lucide-react";
 
 export default function WhoThisIsFor() {
   return (
-    <section id="who-this-is-for" className="py-20 md:py-32 bg-[var(--color-bg-primary)]">
+    <section id="who-this-is-for" className="py-20 md:py-32 bg-[#fafafa] text-black">
       <div className="max-w-4xl mx-auto px-6">
         <AnimateOnScroll>
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-12 text-center">
+          <h2 className="text-4xl md:text-5xl font-bold mb-12 text-center">
             Who This Is For
           </h2>
 
           <div className="grid md:grid-cols-2 gap-8">
-            <div className="bg-[var(--color-bg-secondary)] border border-[var(--color-primary)]/30 rounded-2xl p-8">
-              <h3 className="text-2xl font-bold text-white mb-6">
+            <div className="bg-white border border-gray-300 rounded-2xl p-8">
+              <h3 className="text-2xl font-bold text-black mb-6">
                 This is for you if:
               </h3>
               <ul className="space-y-4">
@@ -26,15 +25,15 @@ export default function WhoThisIsFor() {
                   "You're ready to let a tool do the heavy lifting for you",
                 ].map((item, index) => (
                   <li key={index} className="flex items-start gap-3">
-                    <Check className="w-6 h-6 text-[var(--color-primary)] flex-shrink-0 mt-0.5" />
-                    <span className="text-[var(--color-text-secondary)]">{item}</span>
+                    <Check className="w-6 h-6 text-black flex-shrink-0 mt-0.5" />
+                    <span className="text-gray-700">{item}</span>
                   </li>
                 ))}
               </ul>
             </div>
 
-            <div className="bg-[var(--color-bg-secondary)] border border-[var(--color-border)] rounded-2xl p-8">
-              <h3 className="text-2xl font-bold text-white mb-6">
+            <div className="bg-white border border-gray-300 rounded-2xl p-8">
+              <h3 className="text-2xl font-bold text-black mb-6">
                 This is NOT for you if:
               </h3>
               <ul className="space-y-4">
@@ -44,8 +43,8 @@ export default function WhoThisIsFor() {
                   "You want to stay anonymous — these tools put your thinking out in the world",
                 ].map((item, index) => (
                   <li key={index} className="flex items-start gap-3">
-                    <X className="w-6 h-6 text-red-400 flex-shrink-0 mt-0.5" />
-                    <span className="text-[var(--color-text-secondary)]">{item}</span>
+                    <X className="w-6 h-6 text-red-500 flex-shrink-0 mt-0.5" />
+                    <span className="text-gray-700">{item}</span>
                   </li>
                 ))}
               </ul>
@@ -56,4 +55,3 @@ export default function WhoThisIsFor() {
     </section>
   );
 }
-
