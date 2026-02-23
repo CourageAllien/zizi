@@ -24,27 +24,21 @@ export default function OrrenHeader() {
             <span className="text-white font-bold text-lg">Z</span>
           </div>
           <nav className="hidden md:flex items-center gap-8">
-            <a href="#solutions" className="text-sm text-gray-700 hover:text-black transition-colors">
-              Solutions
+            <a href="#how-it-works" className="text-sm text-gray-700 hover:text-black transition-colors">
+              How It Works
             </a>
-            <a href="#use-cases" className="text-sm text-gray-700 hover:text-black transition-colors">
-              Use Cases
-            </a>
-            <a href="#developers" className="text-sm text-gray-700 hover:text-black transition-colors">
-              Developers
-            </a>
-            <a href="#resources" className="text-sm text-gray-700 hover:text-black transition-colors">
-              Resources
+            <a href="#what-you-could-build" className="text-sm text-gray-700 hover:text-black transition-colors">
+              What You Could Build
             </a>
             <a href="#pricing" className="text-sm text-gray-700 hover:text-black transition-colors">
               Pricing
             </a>
+            <a href="#faq" className="text-sm text-gray-700 hover:text-black transition-colors">
+              FAQ
+            </a>
           </nav>
         </div>
         <div className="flex items-center gap-6">
-          <a href="/login" className="text-sm text-gray-700 hover:text-black transition-colors">
-            Login
-          </a>
           <Link
             href="/book"
             className="bg-gray-800 text-white px-6 py-2 rounded-lg text-sm font-medium hover:bg-gray-900 transition-colors"

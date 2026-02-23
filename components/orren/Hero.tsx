@@ -122,11 +122,9 @@ export default function OrrenHero() {
           <h3 className="text-lg text-gray-700 mb-8">
             Trusted by the teams redefining productivity.
           </h3>
-          <div className="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-13 gap-8 items-center justify-items-center opacity-60">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 items-center justify-items-center opacity-60">
             {[
-              "Twilio", "SUPERHUMAN", "perplexity", "Vercel",
-              "antidote", "re6l", "pilothouse", "THREAT TEC",
-              "BLACKBIRD", "Resquared", "Ripple", "Interlaced.io", "Prenetics"
+              "Bizal", "Zortcloud", "Bulletproof Management", "GDnD Consultants", "Kevs Kitchen"
             ].map((company, index) => (
               <div key={index} className="text-gray-800 font-medium text-sm">
                 {company}

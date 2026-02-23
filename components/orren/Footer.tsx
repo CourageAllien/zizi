@@ -29,7 +29,7 @@ export default function OrrenFooter() {
           </div>
 
           <div>
-            <h4 className="font-semibold text-gray-900 mb-6">Product</h4>
+            <h4 className="font-semibold text-gray-900 mb-6">Service</h4>
             <ul className="space-y-4">
               <li>
                 <a
