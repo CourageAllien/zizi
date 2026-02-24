@@ -355,7 +355,7 @@ export default function ZiziCoBookingPage() {
             >
               <span className="text-gray-500 text-sm">
                 Starting at{" "}
-                <span className="text-cyan-400 font-semibold">$2,199/mo</span> •
+                <span className="text-cyan-400 font-semibold">$549/mo</span> •
                 Unlimited builds
               </span>
             </motion.div>
