@@ -1,43 +1,65 @@
-import Header from "@/components/fracrep/Header";
-import Hero from "@/components/fracrep/Hero";
-import Problem from "@/components/fracrep/Problem";
-import TheShift from "@/components/fracrep/TheShift";
-import WhatWeDo from "@/components/fracrep/WhatWeDo";
-import HowItWorks from "@/components/fracrep/HowItWorks";
-import WhoThisIsFor from "@/components/fracrep/WhoThisIsFor";
-import WhatYouCouldBuild from "@/components/fracrep/WhatYouCouldBuild";
-import Pricing from "@/components/fracrep/Pricing";
-import FAQ from "@/components/fracrep/FAQ";
-import FinalCTA from "@/components/fracrep/FinalCTA";
-import Footer from "@/components/fracrep/Footer";
+import { Metadata } from "next";
+import Header from "@/components/Header";
+import Hero from "@/components/Hero";
+import Problem from "@/components/Problem";
+import Solution from "@/components/Solution";
+import HowItWorks from "@/components/HowItWorks";
+import WhatWeBuild from "@/components/WhatWeBuild";
+import WhoItsFor from "@/components/WhoItsFor";
+import Differentiation from "@/components/Differentiation";
+import HomePricing from "@/components/HomePricing";
+import FAQ from "@/components/FAQ";
+import CTA from "@/components/CTA";
+import FreeToolOffer from "@/components/FreeToolOffer";
+import Footer from "@/components/Footer";
+
+export const metadata: Metadata = {
+  title: "ZiziCo — Your AI Ops Team",
+  description:
+    "We build AI systems that complement the work you are doing and helps add revenue. Unlimited builds. Maintained forever.",
+  openGraph: {
+    title: "ZiziCo — Your AI Ops Team",
+    description:
+      "We build AI systems that complement the work you are doing and helps add revenue. Unlimited builds. Maintained forever.",
+    url: "https://zizi.so",
+    siteName: "ZiziCo",
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "ZiziCo — Your AI Ops Team",
+    description:
+      "We build AI systems that complement the work you are doing and helps add revenue.",
+  },
+};
 
 export default function Home() {
   return (
-    <div className="light-page" style={{ background: "#f5f5f5", color: "#111827", position: "relative", zIndex: 200 }}>
-      <main className="max-w-[1200px] mx-auto bg-white min-h-screen border-x border-gray-200 shadow-sm">
-        <Header />
+    <>
+      <Header />
+      <main>
         <Hero />
-        <div id="problem">
-          <Problem />
-        </div>
-        <TheShift />
-        <WhatWeDo />
+        <Problem />
+        <Solution />
         <div id="how-it-works">
           <HowItWorks />
         </div>
-        <WhoThisIsFor />
-        <div id="what-you-could-build">
-          <WhatYouCouldBuild />
+        <div id="what-we-build">
+          <WhatWeBuild />
         </div>
+        <WhoItsFor />
+        <Differentiation />
+        <FreeToolOffer />
         <div id="pricing">
-          <Pricing />
+          <HomePricing />
         </div>
         <div id="faq">
           <FAQ />
         </div>
-        <FinalCTA />
-        <Footer />
+        <CTA />
       </main>
-    </div>
+      <Footer />
+    </>
   );
 }
