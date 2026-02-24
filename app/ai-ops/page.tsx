@@ -1,27 +1,26 @@
 import { Metadata } from "next";
-import PartnerNavbar from "@/components/partner/PartnerNavbar";
-import PartnerFooter from "@/components/partner/PartnerFooter";
-import PartnerHero from "@/components/partner/sections/PartnerHero";
-import PartnerProblem from "@/components/partner/sections/PartnerProblem";
-import PartnerSolution from "@/components/partner/sections/PartnerSolution";
-import PartnerHowItWorks from "@/components/partner/sections/PartnerHowItWorks";
-import PartnerWhatWeBuild from "@/components/partner/sections/PartnerWhatWeBuild";
-import PartnershipValue from "@/components/partner/sections/PartnershipValue";
-import MonthlyDeliverables from "@/components/partner/sections/MonthlyDeliverables";
-import PartnerPricing from "@/components/partner/sections/PartnerPricing";
-import PartnerSocialProof from "@/components/partner/sections/PartnerSocialProof";
-import PartnerFAQ from "@/components/partner/sections/PartnerFAQ";
-import PartnerFinalCTA from "@/components/partner/sections/PartnerFinalCTA";
-import TrialRequestForm from "@/components/partner/TrialRequestForm";
+import Header from "@/components/Header";
+import Hero from "@/components/Hero";
+import Problem from "@/components/Problem";
+import Solution from "@/components/Solution";
+import HowItWorks from "@/components/HowItWorks";
+import WhatWeBuild from "@/components/WhatWeBuild";
+import WhoItsFor from "@/components/WhoItsFor";
+import Differentiation from "@/components/Differentiation";
+import Pricing from "@/components/Pricing";
+import FAQ from "@/components/FAQ";
+import CTA from "@/components/CTA";
+import FreeToolOffer from "@/components/FreeToolOffer";
+import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: "ZiziCo — Your AI Ops Team",
   description:
-    "We help you build AI-powered sales assets and tools for your marketing and sales campaigns. Trial build for $750, or partner with us at $2,500/month.",
+    "We build AI systems that complement the work you are doing and helps add revenue. Unlimited builds. Maintained forever.",
   openGraph: {
     title: "ZiziCo — Your AI Ops Team",
     description:
-      "We help you build AI-powered sales assets and tools for your marketing and sales campaigns.",
+      "We build AI systems that complement the work you are doing and helps add revenue. Unlimited builds. Maintained forever.",
     url: "https://zizi.so/ai-ops",
     siteName: "ZiziCo",
     locale: "en_US",
@@ -31,30 +30,36 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "ZiziCo — Your AI Ops Team",
     description:
-      "AI-powered sales assets for your marketing campaigns. Start with a $750 trial build.",
+      "We build AI systems that complement the work you are doing and helps add revenue.",
   },
 };
 
 export default function AiOpsPage() {
   return (
     <>
-      <PartnerNavbar />
+      <Header />
       <main>
-        <PartnerHero />
-        <PartnerProblem />
-        <PartnerSolution />
-        <PartnerHowItWorks />
-        <PartnerWhatWeBuild />
-        <PartnershipValue />
-        <MonthlyDeliverables />
-        <PartnerPricing />
-        <PartnerSocialProof />
-        <PartnerFAQ />
-        <TrialRequestForm />
-        <PartnerFinalCTA />
+        <Hero />
+        <Problem />
+        <Solution />
+        <div id="how-it-works">
+          <HowItWorks />
+        </div>
+        <div id="what-we-build">
+          <WhatWeBuild />
+        </div>
+        <WhoItsFor />
+        <Differentiation />
+        <FreeToolOffer />
+        <div id="pricing">
+          <Pricing />
+        </div>
+        <div id="faq">
+          <FAQ />
+        </div>
+        <CTA />
       </main>
-      <PartnerFooter />
+      <Footer />
     </>
   );
 }
-
