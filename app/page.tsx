@@ -9,9 +9,9 @@ import WhoItsFor from "@/components/WhoItsFor";
 import Differentiation from "@/components/Differentiation";
 import HomePricing from "@/components/HomePricing";
 import FAQ from "@/components/FAQ";
-import CTA from "@/components/CTA";
+import HomeCTA from "@/components/HomeCTA";
 import FreeToolOffer from "@/components/FreeToolOffer";
-import Footer from "@/components/Footer";
+import HomeFooter from "@/components/HomeFooter";
 
 export const metadata: Metadata = {
   title: "ZiziCo — Your AI Ops Team",
@@ -57,9 +57,9 @@ export default function Home() {
         <div id="faq">
           <FAQ />
         </div>
-        <CTA />
+        <HomeCTA />
       </main>
-      <Footer />
+      <HomeFooter />
     </>
   );
 }

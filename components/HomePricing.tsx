@@ -108,9 +108,7 @@ export default function HomePricing() {
             We also take on custom projects. Tell us what you need and we&apos;ll scope it out together.
           </p>
           <a
-            href="https://calendly.com/courageoutbounder/ai-chat"
-            target="_blank"
-            rel="noopener noreferrer"
+            href="/zizi/book"
             className="btn-secondary inline-flex items-center gap-2"
           >
             Contact Us for Custom Builds
